@@ -1,19 +1,26 @@
 class AwardsCeremony:
-  def __init__(self, name, awards, start_time, end_time, location):
+  def __init__(self, name,location, start_time, end_time, hosts, awards):
     self.name = name
-    self.awards = awards
+    self.location = location
     self.start_time = start_time
     self.end_time = end_time
-    self.location = location
+    self.hosts = hosts
+    self.awards = awards
 
   def __str__(self):
-    return f"The awards ceremony is {self.name}. It started at {self.start_time} and ended at {self.end_time} at {self.location}. The awards were the following: {self.awards}"
+    output = f"Host: {self.hosts}\n"
+    for award in self.awards:
+      output += f"Award: {award.name}\n"
+      output += f"Presenters: {', '.join(award.presenters)}\n"
+      output += f"Nominees: \"{', '.join(award.nominees)}\"\n"
+      output += f"Winner: \"{award.winner}\"\n"
+    return output
 
   def get_name(self):
     return self.name
 
-  def get_awards(self):
-    return self.awards
+  def get_location(self):
+    return self.location
 
   def get_start_time(self):
     return self.start_time
@@ -21,12 +28,15 @@ class AwardsCeremony:
   def get_end_time(self):
     return self.end_time
 
-  def get_location(self):
-    return self.location
+  def get_hosts(self):
+    return self.hosts
+
+  def get_awards(self):
+    return self.awards
 
   def to_json(self):
     ceremony_dict = {
-        "Host": self.name,
+        "Host": self.hosts,
     }
 
     for award in self.awards:
