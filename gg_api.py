@@ -1,6 +1,7 @@
 import os
 import json
 from data_structures.Award import Award
+from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
 
@@ -114,6 +115,14 @@ def main():
       ], "argo" )
 
     print(sample_award)
+
+    print("")
+    print("Sample Awards Ceremony:")
+
+    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["Amy Poehler", "Tina Fey"], [sample_award, sample_award])
+
+    print(sample_awards_ceremony)
+    print(sample_awards_ceremony.to_json())
 
 
 if __name__ == "__main__":
