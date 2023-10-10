@@ -1,38 +1,34 @@
 class Award:
   def __init__(self, name, presenters, nominees, winner):
-    self.name = name
-    self.presenters = presenters
-    self.nominees = nominees
-    self.winner = winner
+    self.__name = name
+    self.__presenters = presenters
+    self.__nominees = nominees
+    self.__winner = winner
 
   def __str__(self):
-    presenters_str = " & ".join(self.presenters)
-    first_sentence = f"{self.name} was presented by {presenters_str}."
+    output = f"Award: {self.get_name().title()}\n"
+    output += f"Presenters: {', '.join(self.get_presenters()).title()}\n"
+    output += f"Nominees: {', '.join(self.get_nominees()).title()}\n"
+    output += f"Winner: {self.get_winner().title()}\n"
 
-    if len(self.nominees) == 0:
-      second_sentence = "There were no nominees and the winner was {self.winner}."
-    else:
-      nominees_str = ", ".join(self.nominees)
-      second_sentence = f"The nominees were {nominees_str} and the winner was {self.winner}."
-
-    return f"{first_sentence} {second_sentence}"
+    return output
 
   def get_name(self):
-    return self.name
+    return self.__name
 
   def get_presenters(self):
-    return self.presenters
+    return self.__presenters
 
   def get_nominees(self):
-    return self.nominees
+    return self.__nominees
 
   def get_winner(self):
-    return self.winner
+    return self.__winner
 
   def to_json(self):
     award_dict = {
-        "Presenters": self.presenters,
-        "Nominees": self.nominees,
-        "Winner": self.winner
+        "Presenters": [presenter.title() for presenter in self.get_presenters()],
+        "Nominees": [nominee.title() for nominee in self.get_nominees()],
+        "Winner": self.get_winner().title()
     }
-    return {self.name: award_dict}
+    return award_dict
