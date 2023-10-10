@@ -1,5 +1,8 @@
 import os
 import json
+import re
+from langdetect import detect
+
 from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
@@ -34,6 +37,65 @@ def load_tweet_data(data_directory, json_filename):
 
 
     return tweets
+
+def create_tweet_objects(tweet_data):
+    tweets = []
+    # Preprocess each tweet in the list
+    for tweet in tweet_data:
+      new_tweet = Tweet(tweet)
+      tweets.append(new_tweet)
+
+    return tweets
+
+
+def print_test_info(tweets):
+    some_tweets = tweets[:20]
+    for tweet in some_tweets:
+        print("")
+        print(tweet)
+        # print(tweet.get_tokens())
+
+
+    print("")
+    print("Sample Entity:")
+
+    sample_entity = Entity("My name")
+    sample_entity.set_name("Javi")
+
+    print(sample_entity)
+
+    print("")
+    print("Sample Award:")
+
+    sample_award = Award("best screenplay - motion picture", [
+        "robert pattinson",
+        "amanda seyfried"
+      ], [
+        "zero dark thirty",
+        "lincoln",
+        "silver linings playbook",
+        "argo"
+      ], "argo" )
+
+    print(sample_award)
+
+    print("")
+    print("Sample Awards Ceremony:")
+
+    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award])
+
+    print(sample_awards_ceremony)
+    print(sample_awards_ceremony.to_json())
+
+    print("")
+    print("")
+    print("")
+    print("Testing API")
+    print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
+    print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
+    print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
+    print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
+    print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
 
 def get_hosts(year, awards_ceremony):
     '''Hosts is a list of one or more strings. Do NOT change the name
@@ -86,62 +148,52 @@ def main():
     if len(tweet_data) == 0:
         return
 
-    tweets = []
-    # Preprocess each tweet in the list
-    for tweet in tweet_data:
-      new_tweet = Tweet(tweet)
-      tweets.append(new_tweet)
-
-    some_tweets = tweets[:20]
-    for tweet in some_tweets:
-        print("")
-        print(tweet)
-        # print(tweet.get_tokens())
+    tweets = create_tweet_objects(tweet_data)
 
 
-    print("")
-    print("Sample Entity:")
+    print(f"Number of tweets: {len(tweets)}")
+    # Define a regular expression pattern to match various forms of "win"
+    # pattern = r'\bwin[s]*\b'
 
-    sample_entity = Entity("My name")
-    sample_entity.set_name("Javi")
+    tweets = [tweet for tweet in tweets if not tweet.is_retweet() ]
 
-    print(sample_entity)
+    print(f"Number of non retweets: {len(tweets)}")
 
-    print("")
-    print("Sample Award:")
+    tweets = [tweet for tweet in tweets if not tweet.has_emojis()]
 
-    sample_award = Award("best screenplay - motion picture", [
-        "robert pattinson",
-        "amanda seyfried"
-      ], [
-        "zero dark thirty",
-        "lincoln",
-        "silver linings playbook",
-        "argo"
-      ], "argo" )
+    print(f"Number of non retweets without emojis: {len(tweets)}")
 
-    print(sample_award)
 
-    print("")
-    print("Sample Awards Ceremony:")
+    english_tweets = []
 
-    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award])
+    for tweet in tweets:
+        try:
+            language = detect(tweet.get_original_text())
+            # print(tweet.get_original_text(), language)
+            if language == "en":
+                english_tweets.append(tweet)
+        except Exception as e:
+            print("")
+            print(e)
+            print("")
+            continue
+    print("escaped loop")
 
-    print(sample_awards_ceremony)
-    print(sample_awards_ceremony.to_json())
+    print(f"Number of English non retweets: {len(tweets)}")
 
-    print("")
-    print("")
-    print("")
-    print("Testing API")
-    print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
-    print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
-    print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
-    print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
-    print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
+    # Create a list of tweets that contain the word "win"
+    # win_tweets = [tweet for tweet in tweets if has_win_token(tweet.get_tokens(), pattern)]
+
+    # some_win_tweets = win_tweets[100:120]
+    # for tweet in some_win_tweets:
+
+    #     print(tweet)
 
 
 
+# Function to check if any token contains any form of "win"
+def has_win_token(tokens, pattern):
+    return any(re.search(pattern, token, re.IGNORECASE) for token in tokens)
 
 if __name__ == "__main__":
     main()
