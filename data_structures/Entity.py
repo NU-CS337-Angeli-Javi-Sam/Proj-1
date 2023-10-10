@@ -1,12 +1,12 @@
 class Entity:
   def __init__(self, name):
-    self.name = name
+    self.__name = name
 
   def __str__(self):
-    return f"{self.name}"
+    return f"{self.get_name()}"
 
-  def getName(self):
-    return self.name
+  def get_name(self):
+    return self.__name
 
-  def setName(self, name):
-    self.name = name
+  def set_name(self, name):
+    self.__name = name
