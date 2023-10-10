@@ -29,24 +29,46 @@ def load_tweet_data(data_directory, json_filename):
     return tweets
 
 def get_hosts(year):
+    '''Hosts is a list of one or more strings. Do NOT change the name
+    of this function or what it returns.'''
     pass
 
 def get_awards(year):
+    '''Awards is a list of strings. Do NOT change the name
+    of this function or what it returns.'''
     pass
 
 def get_nominees(year):
+    '''Nominees is a dictionary with the hard coded award
+    names as keys, and each entry a list of strings. Do NOT change
+    the name of this function or what it returns.'''
     pass
 
 def get_winner(year):
+    '''Winners is a dictionary with the hard coded award
+    names as keys, and each entry containing a single string.
+    Do NOT change the name of this function or what it returns.'''
     pass
 
 def get_presenters(year):
+    '''Presenters is a dictionary with the hard coded award
+    names as keys, and each entry a list of strings. Do NOT change the
+    name of this function or what it returns.'''
     pass
 
 def pre_ceremony():
+    '''This function loads/fetches/processes any data your program
+    will use, and stores that data in your DB or in a json, csv, or
+    plain text file. It is the first thing the TA will run when grading.
+    Do NOT change the name of this function or what it returns.'''
     pass
 
 def main():
+    '''This function calls your program. Typing "python gg_api.py"
+    will run this function. Or, in the interpreter, import gg_api
+    and then run gg_api.main(). This is the second thing the TA will
+    run when grading. Do NOT change the name of this function or
+    what it returns.'''
     # Define the data directory and the target JSON file
     data_directory = "data"
     json_filename = "gg2013.json"
