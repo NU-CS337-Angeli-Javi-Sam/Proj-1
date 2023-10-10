@@ -28,3 +28,11 @@ class Award:
 
   def get_winner(self):
     return self.winner
+
+  def to_json(self):
+    award_dict = {
+        "Presenters": self.presenters,
+        "Nominees": self.nominees,
+        "Winner": self.winner
+    }
+    return {self.name: award_dict}

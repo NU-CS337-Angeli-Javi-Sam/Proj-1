@@ -23,3 +23,13 @@ class AwardsCeremony:
 
   def get_location(self):
     return self.location
+
+  def to_json(self):
+    ceremony_dict = {
+        "Host": self.name,
+    }
+
+    for award in self.awards:
+        ceremony_dict[award.name] = award.to_json()
+
+    return ceremony_dict
