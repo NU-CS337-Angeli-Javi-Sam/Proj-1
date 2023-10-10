@@ -5,6 +5,12 @@ from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
 
+from helpers.awards import get_awards_list
+from helpers.hosts import get_hosts_list
+from helpers.nominees import get_nominees_dict
+from helpers.presenters import get_presenters_dict
+from helpers.winner import get_winners_dict
+
 def load_tweet_data(data_directory, json_filename):
 
     json_filepath = os.path.join(data_directory, json_filename)
@@ -29,33 +35,33 @@ def load_tweet_data(data_directory, json_filename):
 
     return tweets
 
-def get_hosts(year):
+def get_hosts(year, awards_ceremony):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
-    pass
+    return get_hosts_list(awards_ceremony)
 
-def get_awards(year):
+def get_awards(year, awards_ceremony):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    pass
+    return get_awards_list(awards_ceremony)
 
-def get_nominees(year):
+def get_nominees(year, awards_ceremony):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
-    pass
+    return get_nominees_dict(awards_ceremony)
 
-def get_winner(year):
+def get_winner(year, awards_ceremony):
     '''Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
-    pass
+    return get_winners_dict(awards_ceremony)
 
-def get_presenters(year):
+def get_presenters(year, awards_ceremony):
     '''Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
-    pass
+    return get_presenters_dict(awards_ceremony)
 
 def pre_ceremony():
     '''This function loads/fetches/processes any data your program
@@ -119,10 +125,22 @@ def main():
     print("")
     print("Sample Awards Ceremony:")
 
-    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["Amy Poehler", "Tina Fey"], [sample_award, sample_award])
+    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award])
 
     print(sample_awards_ceremony)
     print(sample_awards_ceremony.to_json())
+
+    print("")
+    print("")
+    print("")
+    print("Testing API")
+    print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
+    print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
+    print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
+    print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
+    print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
+
+
 
 
 if __name__ == "__main__":
