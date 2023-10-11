@@ -144,11 +144,16 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Define the data directory and the target JSON file
-    data_directory = "data"
+    input_directory = "data"
+    output_directory = 'output'
+    text_output_filepath = f"{output_directory}/output.txt"
+    json_output_filepath = f"{output_directory}/output.json"
+
+
     filename, year = initialize_script()
 
     # Initialize an empty list to store the tweets
-    tweet_data = load_tweet_data(data_directory, filename)
+    tweet_data = load_tweet_data(input_directory, filename)
 
     if len(tweet_data) == 0:
         return
@@ -163,6 +168,35 @@ def main():
 
     print(f"Number of English non retweets without emojis: {len(tweets)}")
 
+    sample_award = Award("best screenplay - motion picture", [
+        "robert pattinson",
+        "amanda seyfried"
+      ], [
+        "zero dark thirty",
+        "lincoln",
+        "silver linings playbook",
+        "argo"
+      ], "argo" )
+
+
+
+    sample_award_2 = Award("best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",[
+        "kristen bell",
+        "john krasinski"
+      ], [
+        "max greenfield",
+        "danny huston",
+        "mandy patinkin",
+        "eric stonestreet"
+      ], "ed harris")
+
+    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award, sample_award_2])
+
+    with open(text_output_filepath, "w") as file:
+        file.write(str(sample_awards_ceremony))
+
+    with open(json_output_filepath, "w") as file:
+        json.dump(sample_awards_ceremony.to_json(), file)
 
 if __name__ == "__main__":
     main()
