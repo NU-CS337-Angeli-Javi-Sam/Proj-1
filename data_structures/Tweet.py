@@ -1,5 +1,5 @@
 import re
-
+# from langid import classify
 
 class Tweet:
   def __init__(self, data):
@@ -13,7 +13,7 @@ class Tweet:
     self.__mentions = [word.lower() for word in data['text'].split() if word.startswith('@')]
     self.__is_retweet  = data['text'].startswith("RT ")
     self.__has_emojis = self.__identify_emojis__(data['text'])
-    # self.__language = self.__identify_language(data['text'])
+    # self.__language = classify(data['text'])[0]
 
   def __tokenize__(self, text):
     tokens = []
@@ -48,7 +48,7 @@ class Tweet:
     return bool(combined_emoji_pattern.search(text))
 
   def __str__(self):
-    output =f"tweet_id: {self.get_tweet_id()}\n"
+    output = f"tweet_id: {self.get_tweet_id()}\n"
     output += f"tweet_username: {self.get_username()}\n"
     output += f"tweet_user_id: {self.get_user_id()}\n"
     output += f"tweet_timestamp: {self.get_timestamp()}\n"
@@ -58,7 +58,7 @@ class Tweet:
     output += f"tweet_hashtags: {self.get_hashtags()}\n"
     output += f"Is it a retweet? {self.is_retweet()}\n"
     output += f"Does it have emojis? {self.has_emojis()}\n"
-    # output += f"tweet_language {self.has_emojis()}\n"
+    # output += f"tweet_language {self.get_language()}\n"
 
     return output
 
