@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
@@ -12,26 +13,34 @@ from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
 from helpers.winner import get_winners_dict
 
-def load_tweet_data(data_directory, json_filename):
+def initialize_script():
 
-    json_filepath = os.path.join(data_directory, json_filename)
+    filename = sys.argv[1] if len(sys.argv) > 1 else 'gg2013.json' # First argument
+    year = sys.argv[2] if len(sys.argv) > 2 else '2013'  # Second argument
+
+    return filename, year
+
+
+def load_tweet_data(data_directory, filename):
+
+    filepath = os.path.join(data_directory, filename)
 
     tweets = []
 
     # Check if the JSON file exists in the specified directory
-    if os.path.exists(json_filepath):
+    if os.path.exists(filepath):
         # Open and parse the entire JSON list of tweets
-        with open(json_filepath, "r", encoding="utf-8") as json_file:
+        with open(filepath, "r", encoding="utf-8") as json_file:
             try:
                 tweets = json.load(json_file)
             except json.JSONDecodeError as e:
                 print(f"Error parsing JSON: {str(e)}")
 
         # Print the number of tweets loaded
-        print(f"Loaded {len(tweets)} tweets from {json_filepath}")
+        print(f"Loaded {len(tweets)} tweets from {filepath}")
         # Now, 'tweets' contains all the tweets from the JSON file and can be used for preprocessing.
     else:
-        print(f"The JSON file '{json_filename}' does not exist in the '{data_directory}' directory.")
+        print(f"The JSON file '{filename}' does not exist in the '{data_directory}' directory.")
 
 
     return tweets
@@ -136,10 +145,10 @@ def main():
     what it returns.'''
     # Define the data directory and the target JSON file
     data_directory = "data"
-    json_filename = "gg2013.json"
+    filename, year = initialize_script()
 
     # Initialize an empty list to store the tweets
-    tweet_data = load_tweet_data(data_directory, json_filename)
+    tweet_data = load_tweet_data(data_directory, filename)
 
     if len(tweet_data) == 0:
         return
