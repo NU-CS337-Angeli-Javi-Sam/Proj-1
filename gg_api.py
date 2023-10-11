@@ -1,7 +1,5 @@
 import os
 import json
-import re
-from langdetect import detect
 
 from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
@@ -47,14 +45,12 @@ def create_tweet_objects(tweet_data):
 
     return tweets
 
-
 def print_test_info(tweets):
     some_tweets = tweets[:20]
     for tweet in some_tweets:
         print("")
         print(tweet)
         # print(tweet.get_tokens())
-
 
     print("")
     print("Sample Entity:")
@@ -150,50 +146,14 @@ def main():
 
     tweets = create_tweet_objects(tweet_data)
 
-
     print(f"Number of tweets: {len(tweets)}")
-    # Define a regular expression pattern to match various forms of "win"
-    # pattern = r'\bwin[s]*\b'
 
-    tweets = [tweet for tweet in tweets if not tweet.is_retweet() ]
+    tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
-    print(f"Number of non retweets: {len(tweets)}")
+    # tweets = [tweet for tweet in tweets if tweet.get_language() == 'en']
 
-    tweets = [tweet for tweet in tweets if not tweet.has_emojis()]
+    print(f"Number of English non retweets without emojis: {len(tweets)}")
 
-    print(f"Number of non retweets without emojis: {len(tweets)}")
-
-
-    english_tweets = []
-
-    for tweet in tweets:
-        try:
-            language = detect(tweet.get_original_text())
-            # print(tweet.get_original_text(), language)
-            if language == "en":
-                english_tweets.append(tweet)
-        except Exception as e:
-            print("")
-            print(e)
-            print("")
-            continue
-    print("escaped loop")
-
-    print(f"Number of English non retweets: {len(tweets)}")
-
-    # Create a list of tweets that contain the word "win"
-    # win_tweets = [tweet for tweet in tweets if has_win_token(tweet.get_tokens(), pattern)]
-
-    # some_win_tweets = win_tweets[100:120]
-    # for tweet in some_win_tweets:
-
-    #     print(tweet)
-
-
-
-# Function to check if any token contains any form of "win"
-def has_win_token(tokens, pattern):
-    return any(re.search(pattern, token, re.IGNORECASE) for token in tokens)
 
 if __name__ == "__main__":
     main()
