@@ -13,13 +13,12 @@ from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
 from helpers.winner import get_winners_dict
 
-def initialize_script():
+def initialization_script():
 
     filename = sys.argv[1] if len(sys.argv) > 1 else 'gg2013.json' # First argument
     year = sys.argv[2] if len(sys.argv) > 2 else '2013'  # Second argument
 
     return filename, year
-
 
 def load_tweet_data(data_directory, filename):
 
@@ -102,33 +101,33 @@ def print_test_info(tweets):
     print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
     print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
 
-def get_hosts(year, awards_ceremony):
+def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
-    return get_hosts_list(awards_ceremony)
+    return get_hosts_list(year)
 
-def get_awards(year, awards_ceremony):
+def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    return get_awards_list(awards_ceremony)
+    return get_awards_list(year)
 
-def get_nominees(year, awards_ceremony):
+def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
-    return get_nominees_dict(awards_ceremony)
+    return get_nominees_dict(year)
 
-def get_winner(year, awards_ceremony):
+def get_winner(year):
     '''Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
-    return get_winners_dict(awards_ceremony)
+    return get_winners_dict(year)
 
-def get_presenters(year, awards_ceremony):
+def get_presenters(year):
     '''Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
-    return get_presenters_dict(awards_ceremony)
+    return get_presenters_dict(year)
 
 def pre_ceremony():
     '''This function loads/fetches/processes any data your program
@@ -143,16 +142,15 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    # Define the data directory and the target JSON file
+
     input_directory = "data"
     output_directory = 'output'
-    text_output_filepath = f"{output_directory}/output.txt"
-    json_output_filepath = f"{output_directory}/output.json"
 
+    filename, year = initialization_script()
 
-    filename, year = initialize_script()
+    text_output_filepath = f"{output_directory}/output{year}.txt"
+    json_output_filepath = f"{output_directory}/output{year}.json"
 
-    # Initialize an empty list to store the tweets
     tweet_data = load_tweet_data(input_directory, filename)
 
     if len(tweet_data) == 0:
@@ -177,8 +175,6 @@ def main():
         "silver linings playbook",
         "argo"
       ], "argo" )
-
-
 
     sample_award_2 = Award("best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",[
         "kristen bell",
