@@ -1,9 +1,11 @@
 class AwardsCeremony:
-  def __init__(self, name, location, start_time, end_time, hosts, awards):
-    self.__name = name
-    self.__location = location
-    self.__start_time = start_time
-    self.__end_time = end_time
+  # def __init__(self, name, location, start_time, end_time, hosts, awards):
+  def __init__(self, hosts, awards):
+
+    # self.__name = name
+    # self.__location = location
+    # self.__start_time = start_time
+    # self.__end_time = end_time
     self.__hosts = hosts
     self.__awards = awards
 
@@ -13,17 +15,17 @@ class AwardsCeremony:
       output += f"{award}\n"
     return output
 
-  def get_name(self):
-    return self.__name
+  # def get_name(self):
+  #   return self.__name
 
-  def get_location(self):
-    return self.__location
+  # def get_location(self):
+  #   return self.__location
 
-  def get_start_time(self):
-    return self.__start_time
+  # def get_start_time(self):
+  #   return self.__start_time
 
-  def get_end_time(self):
-    return self.__end_time
+  # def get_end_time(self):
+  #   return self.__end_time
 
   def get_hosts(self):
     return self.__hosts
