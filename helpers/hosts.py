@@ -1,6 +1,6 @@
 import re
-from .import_awards_ceremony import import_awards_ceremony
-
+from utils.import_awards_ceremony import import_awards_ceremony
+from utils.regex import HOST_REGEX, NAME_REGEX, OPENING_MONOLOGUE_REGEX
 
 def find_opening_monologue(tweet):
     tweet_text = tweet.get_original_text()
