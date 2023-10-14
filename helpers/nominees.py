@@ -1,5 +1,5 @@
-from .create_dict import create_dict
-from .import_awards_ceremony import import_awards_ceremony
+from utils.create_dict import create_dict
+from utils.import_awards_ceremony import import_awards_ceremony
 
 def get_nominees_dict(year):
     """

@@ -1,4 +1,4 @@
-from .import_awards_ceremony import import_awards_ceremony
+from utils.import_awards_ceremony import import_awards_ceremony
 
 def get_awards_list(year):
     """
