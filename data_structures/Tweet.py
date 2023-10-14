@@ -15,23 +15,51 @@ class Tweet:
     self.__has_emojis = self.__identify_emojis__(data['text'])
     # self.__language = classify(data['text'])[0]
 
+
   def __tokenize__(self, text):
     tokens = []
     current_token = ""
     for char in text:
-      if char.isalnum() or char in ["'", "_"]:
-        current_token += char
-      elif char in ["@", "#"] and current_token == "":
-        current_token += char
-      else:
-        if current_token:
-          tokens.append(current_token)
-          current_token = ""
-        if not char.isspace():
-          tokens.append(char)
+        if char.isalnum() or char in ["'", "_"]:
+            current_token += char
+        elif char in ["@", "#"] and current_token == "":
+            current_token += char
+        else:
+            if current_token:
+                tokens.append(current_token)
+                current_token = ""
+            if not char.isspace():
+                tokens.append(char)
 
     if current_token:
-      tokens.append(current_token)
+        tokens.append(current_token)
+
+    # Define the regex pattern for names
+    name_pattern = r'\b[A-Z][a-zA-Z.\'-]+(?: [A-Z][a-zA-Z.\'-]+)*\b'
+
+    # Find all matches for the name pattern in the text
+    name_matches = re.finditer(name_pattern, text)
+
+    # Tokenize the text based on the name matches
+    current_position = 0
+
+    for match in name_matches:
+        # Tokenize the text before the name
+        non_name_text = text[current_position:match.start()]
+        non_name_tokens = re.findall(r'\S+|\s', non_name_text)
+        tokens.extend(non_name_tokens)
+
+        # Add the name as a separate token
+        name = match.group()
+        tokens.append(name)
+
+        # Update the current position
+        current_position = match.end()
+
+    # Tokenize any remaining text
+    remaining_text = text[current_position:]
+    remaining_tokens = re.findall(r'\S+|\s', remaining_text)
+    tokens.extend(remaining_tokens)
 
     return tokens
 

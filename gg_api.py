@@ -160,39 +160,44 @@ def main():
 
     print(f"Number of tweets: {len(tweets)}")
 
-    tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
+    for tweet in tweets[10000:10040]:
+        print("")
+        print("original tweet:", tweet.get_original_text())
+        print(tweet.get_tokens())
+
+    # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
     # tweets = [tweet for tweet in tweets if tweet.get_language() == 'en']
 
-    print(f"Number of English non retweets without emojis: {len(tweets)}")
+    # print(f"Number of English non retweets without emojis: {len(tweets)}")
 
-    sample_award = Award("best screenplay - motion picture", [
-        "robert pattinson",
-        "amanda seyfried"
-      ], [
-        "zero dark thirty",
-        "lincoln",
-        "silver linings playbook",
-        "argo"
-      ], "argo" )
+    # sample_award = Award("best screenplay - motion picture", [
+    #     "robert pattinson",
+    #     "amanda seyfried"
+    #   ], [
+    #     "zero dark thirty",
+    #     "lincoln",
+    #     "silver linings playbook",
+    #     "argo"
+    #   ], "argo" )
 
-    sample_award_2 = Award("best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",[
-        "kristen bell",
-        "john krasinski"
-      ], [
-        "max greenfield",
-        "danny huston",
-        "mandy patinkin",
-        "eric stonestreet"
-      ], "ed harris")
+    # sample_award_2 = Award("best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",[
+    #     "kristen bell",
+    #     "john krasinski"
+    #   ], [
+    #     "max greenfield",
+    #     "danny huston",
+    #     "mandy patinkin",
+    #     "eric stonestreet"
+    #   ], "ed harris")
 
-    sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award, sample_award_2])
+    # sample_awards_ceremony = AwardsCeremony("Golden Globes", "Madison Square Garden", "9:00pm", "11:00pm", ["amy poehler", "tina fey"], [sample_award, sample_award_2])
 
-    with open(text_output_filepath, "w") as file:
-        file.write(str(sample_awards_ceremony))
+    # with open(text_output_filepath, "w") as file:
+    #     file.write(str(sample_awards_ceremony))
 
-    with open(json_output_filepath, "w") as file:
-        json.dump(sample_awards_ceremony.to_json(), file)
+    # with open(json_output_filepath, "w") as file:
+    #     json.dump(sample_awards_ceremony.to_json(), file)
 
 if __name__ == "__main__":
     main()
