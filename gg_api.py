@@ -6,6 +6,7 @@ from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
+from data_structures.TweetStats import TweetStats
 
 from helpers.awards import get_awards_list
 from helpers.hosts import get_hosts_list
@@ -46,6 +47,7 @@ def load_tweet_data(data_directory, filename):
 
 def create_tweet_objects(tweet_data):
     tweets = []
+
     # Preprocess each tweet in the list
     for tweet in tweet_data:
       new_tweet = Tweet(tweet)
@@ -160,10 +162,16 @@ def main():
 
     print(f"Number of tweets: {len(tweets)}")
 
+    test_stats = TweetStats()
+
     for tweet in tweets[10000:10040]:
         print("")
         print("original tweet:", tweet.get_original_text())
         print(tweet.get_tokens())
+
+        test_stats.analyzeTweet(tweet)
+
+    print('\n' + str(test_stats))
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
