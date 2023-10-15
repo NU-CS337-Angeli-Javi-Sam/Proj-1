@@ -163,17 +163,20 @@ def main():
 
     print(f"Number of non retweets without emojis: {len(tweets)}")
 
+    #tweets = [tweet for tweet in tweets if detect(tweet.get_original_text() == "en")]
+
 
     english_tweets = []
 
     for tweet in tweets:
         try:
             language = detect(tweet.get_original_text())
-            # print(tweet.get_original_text(), language)
+            #print(tweet.get_original_text(), language)
             if language == "en":
                 english_tweets.append(tweet)
         except Exception as e:
             print("")
+            print(tweet.get_original_text())
             print(e)
             print("")
             continue
