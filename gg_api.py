@@ -7,6 +7,7 @@ from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
+from data_structures.TweetStats import TweetStats
 
 from helpers.awards import get_awards_list
 from helpers.hosts import find_hosts_in_tweets, get_hosts_list
@@ -49,6 +50,7 @@ def load_tweet_data(data_directory, filename):
 
 def create_tweet_objects(tweet_data):
     tweets = []
+
     # Preprocess each tweet in the list
     for tweet in tweet_data:
         new_tweet = Tweet(tweet)
@@ -99,15 +101,15 @@ def print_test_info(tweets):
     print(sample_awards_ceremony)
     print(sample_awards_ceremony.to_json())
 
-    print("")
-    print("")
-    print("")
-    print("Testing API")
-    print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
-    print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
-    print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
-    print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
-    print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
+    # print("")
+    # print("")
+    # print("")
+    # print("Testing API")
+    # print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
+    # print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
+    # print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
+    # print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
+    # print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
 
 
 def get_hosts(year):
@@ -175,12 +177,17 @@ def main():
 
     hosts = find_hosts_in_tweets(tweets)
 
-    # print(f"Number of tweets: {len(tweets)}")
+    test_stats = TweetStats()
 
     # for tweet in tweets[10000:10040]:
     #     print("")
     #     print("original tweet:", tweet.get_original_text())
     #     print(tweet.get_tokens())
+
+    for tweet in tweets:
+        test_stats.analyzeTweet(tweet)
+
+    print('\n' + str(test_stats))
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
