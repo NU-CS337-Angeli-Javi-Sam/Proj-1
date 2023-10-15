@@ -164,11 +164,12 @@ def main():
 
     test_stats = TweetStats()
 
-    for tweet in tweets[10000:10040]:
-        print("")
-        print("original tweet:", tweet.get_original_text())
-        print(tweet.get_tokens())
+    # for tweet in tweets[10000:10040]:
+    #     print("")
+    #     print("original tweet:", tweet.get_original_text())
+    #     print(tweet.get_tokens())
 
+    for tweet in tweets:
         test_stats.analyzeTweet(tweet)
 
     print('\n' + str(test_stats))

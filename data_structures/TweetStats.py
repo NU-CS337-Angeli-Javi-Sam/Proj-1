@@ -97,7 +97,7 @@ class TweetStats:
         # print(self.__topMentioned)
 
         #Updates Top Retweeted Accounts and Retweets
-        if tweet.is_retweet():
+        if tweet.is_retweet() and mentions:
             retweeted_acc = mentions[0]
             original_text = tweet.get_original_text()
 
