@@ -28,7 +28,7 @@ for index, row in df_title_basics_certainyear.iterrows(): #
     #print("TITLE YEAR: ", title_startyear)
     
     if title_endyear != "\\N": # TV series
-        years_to_add = [i for i in range(title_startyear, title_endyear+1)]
+        years_to_add = [str(i) for i in range(int(title_startyear), int(title_endyear+1))]
     elif title_startyear == "\\N": # unknown
         continue
     else: # film
@@ -53,7 +53,7 @@ for index, row in df_title_basics_certainyear.iterrows(): #
         items_for_year["People"].extend(people_names)
 
         #print(year, years[year])
-    print(count)
+    #print(count)
     count += 1
 
 with open("data/"+str(year)+".pkl", 'wb') as file:
