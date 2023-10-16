@@ -185,7 +185,12 @@ def main():
     #     print(tweet.get_tokens())
 
     for tweet in tweets:
-        test_stats.analyzeTweet(tweet)
+        test_stats.logTweet(tweet)
+
+    test_stats.analyzeTweets()
+
+    #Set to get top 5 results for all stats (Change to get more or less)
+    test_stats.setK(5)
 
     print('\n' + str(test_stats))
 

@@ -14,12 +14,13 @@ class TweetHistogram:
         def addTweet (self, tweet):
             for token in tweet.get_tokens():
                 self.__tokenHeap.append(token)
-            self.createWordCloud()
 
         def createWordCloud(self):
-            unique_tokens = set(self.__tokenHeap)
-            for token in unique_tokens:
-                self.__wordCloud.add(token, self.__tokenHeap.count(token))
+            for token in self.__tokenHeap:
+                if token in self.__wordCloud:
+                    self.__wordCloud.updateKV_Pair(token, self.__wordCloud.get(token) + 1)
+                else:
+                    self.__wordCloud.add(token, 1)
 
         def __str__(self):
             return self.__wordCloud.__str__()
