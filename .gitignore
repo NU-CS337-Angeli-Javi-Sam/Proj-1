@@ -1,1 +1,6 @@
 __pycache__
+*.tsv
+films.pkl
+people_for_year.pkl
+people.pkl
+peopleids_principals.pkl
