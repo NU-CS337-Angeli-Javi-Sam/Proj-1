@@ -1,7 +1,19 @@
-def get_presenters_dict(awards_ceremony):
-  presenters_dict = dict()
+from utils.create_dict import create_dict
+from utils.import_awards_ceremony import import_awards_ceremony
 
-  for award in awards_ceremony.get_awards():
-    presenters_dict[award.get_name()] = award.get_presenters()
+def get_presenters_dict(year):
+    """
+    Get a dictionary of presenters for a specific awards ceremony year.
 
-  return presenters_dict
+    Parameters:
+    - year (int): The year of the awards ceremony for which you want to retrieve the presenters.
+
+    Returns:
+    - presenters_dict (dict): A dictionary containing presenters for different award categories.
+    """
+    awards_ceremony = import_awards_ceremony(year)
+
+    # Create a dictionary of presenters using the 'create_dict' function.
+    presenters_dict = create_dict(awards_ceremony, "Presenters")
+
+    return presenters_dict
