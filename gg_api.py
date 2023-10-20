@@ -14,6 +14,7 @@ from helpers.hosts import find_hosts_in_tweets, get_hosts_list
 from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
 from helpers.winner import get_winners_dict
+import helpers.extract_methods as extract
 
 
 def initialization_script():
@@ -124,6 +125,7 @@ def get_awards(year):
     return get_awards_list(year)
 
 
+
 def get_nominees(year):
     """Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
@@ -177,22 +179,24 @@ def main():
 
     hosts = find_hosts_in_tweets(tweets)
 
-    test_stats = TweetStats()
+    tweet_stats = TweetStats()
 
     # for tweet in tweets[10000:10040]:
     #     print("")
     #     print("original tweet:", tweet.get_original_text())
     #     print(tweet.get_tokens())
 
-    for tweet in tweets:
-        test_stats.logTweet(tweet)
+    # for tweet in tweets:
+    #     tweet_stats.logTweet(tweet)
 
-    test_stats.analyzeTweets()
+    # tweet_stats.analyzeTweets()
 
     #Set to get top 5 results for all stats (Change to get more or less)
-    test_stats.setK(5)
+    # tweet_stats.setK(5)
 
-    print('\n' + str(test_stats))
+    # print('\n' + str(tweet_stats))
+
+    extract.extract_award_names(tweets)
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
