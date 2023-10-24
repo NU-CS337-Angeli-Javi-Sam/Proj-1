@@ -100,6 +100,7 @@ def extract_award_names(tweets):
     print(merged_awards.getTop(30))
     print(len(merged_awards))
 
+
 # Uses timestamps for validation of nominee status for particular award
 def extract_nominees(tweet):
     nominee_regex = r''
