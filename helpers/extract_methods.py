@@ -2,6 +2,7 @@ import re
 import datetime
 from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
+import pickle as pkl
 
 
 # award_references = ["best screenplay - motion picture", "best director - motion picture", "best performance by an actress in a television series - comedy or musical",
@@ -96,6 +97,9 @@ def extract_award_names(tweets):
                 break
         if not merged:
             merged_awards.add(unmerged_award, 1)
+
+    with open('C:\\Users\\samj9\\Desktop\\awards.pkl', 'wb') as file:
+        pkl.dump(merged_awards, file)
 
     print(merged_awards.getTop(30))
     print(len(merged_awards))
