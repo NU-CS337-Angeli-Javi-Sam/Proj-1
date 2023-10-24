@@ -49,6 +49,7 @@ def extract_award_names(tweets):
     # (?i) the .* award for lifetime achievement
     unmerged_awards = []
     merged_awards = SortedDict()
+    merged_awards_keywords = {}
 
     # Didn't get the Best Motion Picture nor Best Performation by Actor/Actress, nor cecil award
     award_regex = r'(?i)(?:best) [A-Z][a-zA-Z\s]+(?:award)?'
@@ -92,17 +93,25 @@ def extract_award_names(tweets):
 
         for key in merged_awards.getKeys():
             if get_similarity_ratio(unmerged_award, key, minor_words) >= 0.67:
+                # merged_awards_keywords[key].add(unmerged_award.strip())
                 merged_awards.updateKV_Pair(key, merged_awards.get(key) + 1)
                 merged = True
                 break
         if not merged:
             merged_awards.add(unmerged_award, 1)
+            # merged_awards_keywords[unmerged_award] = set()
 
     with open('C:\\Users\\samj9\\Desktop\\awards.pkl', 'wb') as file:
         pkl.dump(merged_awards, file)
 
-    print(merged_awards.getTop(30))
-    print(len(merged_awards))
+    # print(merged_awards.getTop(30))
+    # print(len(merged_awards))
+
+    # with open("C:/Users/samj9/Desktop/awards.pkl", "rb") as file:
+    #     awards_list = pkl.load(file)
+
+    # print(awards_list)
+    return merged_awards
 
 
 # Uses timestamps for validation of nominee status for particular award
