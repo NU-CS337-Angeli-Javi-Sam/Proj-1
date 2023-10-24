@@ -59,3 +59,6 @@ class SortedDict:
 
     def __contains__(self, item):
         return item in self.__internalDict
+
+    def __len__(self):
+        return len(self.__internalDict)
