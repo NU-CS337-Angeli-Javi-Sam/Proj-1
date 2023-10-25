@@ -1,21 +1,20 @@
 import os
 import json
-import re
 import sys
 
 from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
-from data_structures.TweetStats import TweetStats
 
 from helpers.awards import get_awards_list
-from helpers.extract_methods import extract_award_names
 from helpers.hosts import find_hosts_in_tweets, get_hosts_list
 from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
-from helpers.extract_winners import extract_winners
 from helpers.winner import get_winners_dict
+
+from extractors.extract_winners import extract_winners
+from extractors.extract_awards import extract_awards
 
 
 def initialization_script():
@@ -180,7 +179,12 @@ def main():
 
     hosts = find_hosts_in_tweets(tweets)
 
-    tweet_stats = TweetStats()
+    #Extraction:
+    extract_awards(tweets)
+
+    extract_winners(tweets)
+
+    # tweet_stats = TweetStats()
 
     # for tweet in tweets[10000:10040]:
     #     print("")
@@ -189,23 +193,19 @@ def main():
 
     # for tweet in tweets:
     #     tweet_stats.logTweet(tweet)
-
+    #
     # tweet_stats.analyzeTweets()
 
     #Set to get top 5 results for all stats (Change to get more or less)
-    # tweet_stats.setK(5)
+    # tweet_stats.setK(10)
 
     # print('\n' + str(tweet_stats))
-
-    # extract_award_names(tweets)
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
     # tweets = [tweet for tweet in tweets if tweet.get_language() == 'en']
 
     # print(f"Number of English non retweets without emojis: {len(tweets)}")
-
-    extract_winners(tweets)
 
     sample_award = Award("best screenplay - motion picture", [
         "robert pattinson",
