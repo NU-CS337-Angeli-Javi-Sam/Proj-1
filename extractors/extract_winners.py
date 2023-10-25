@@ -1,96 +1,110 @@
-import pickle as pkl
-import re
 from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
+import pickle as pkl
+import re
+
+#Gets the similarity ratio between two pieces of text
 def get_similarity_ratio(text1, text2):
     text1 = text1.lower()
     text2 = text2.lower()
 
     return SequenceMatcher(None, text1, text2).ratio()
 
+# Removes reductant words
 def remove_words(text, words, replacement):
     for word in words:
         if word in text:
             text.replace(word, replacement)
     return text
+def remove_endphrase (text, words):
+    for word in words:
+        if word in text:
+            text = text[:text.find(word)]
+    return text
+
+def remove_frontphrase (text, words):
+    for word in words:
+        if word in text:
+            text = text[text.find(word):]
+    return text
+
+
+def merge (list):
+    pass
+
 
 def extract_winners (tweets):
+
+    #Extract awards from the output of the extract_awards method
     awards_list = None
 
     with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
         awards_list = pkl.load(file)
 
+    #Proposition list: used as reference to remove reductant words from pieces of text for similarity_ratio
     minor_words = [' in ', ' on ', ' for ', ' a ', ' by ', ' an ', ' or ', ' and ', ' the ', ' nor ', ' yet ', ' but ',
                    ' so ', ' to ', ' from ',
                    ' of ', ' under ', ' over ', ' at ', ' within ', ' between ', ' through ']
 
-    # with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\films_people_2013.pkl", "rb") as file:
-    #     films_people_2013 = pkl.load(file)
-    #
-    # films = films_people_2013['Films']
-    # people = films_people_2013['People']
-
-
+    #Dict mapping awards to potential winners, keys are winners, values are sort dictionaries of winner candidates
     awards_to_winner = {}
 
     for key in awards_list.getKeys():
         awards_to_winner[key] = SortedDict()
 
-        winner_regexes = [r'[A-Z][a-zA-Z\s]*[A-Z][a-z]*',
-                          r'for ([A-Z][a-z]*\s)+']
-        # print(winner_regexes[0])
+        winner_regexes = [r'[A-Z][a-zA-Z\s]*[A-Z][a-z]*', #Regex to find names of person winners
+                          r'for ([A-Z][a-z]*\s)+']        #Regex to find names of non-person winners: Assumes "for" procedes name
 
         for tweet in tweets:
             # award_matches = re.findall(winner_regexes[0], tweet.get_original_text())
             # # print(award_matches)
             #
             # for award_match in award_matches:
+            #If tweet is relevant to our current award (the current key)
             if key in tweet.get_original_text():
-                name_matches = []
+                regex_matches = []
 
+                #Find all the matches to our regexes for this particular tweet
                 for winner_regex in winner_regexes:
                     matches = re.findall(winner_regex, tweet.get_original_text().replace(key, ' '))
 
-                    name_matches.extend(matches)
+                    regex_matches.extend(matches)
 
-                for name in name_matches:
-                    # official_name = None
+                #Check if any of the matches are already mapped to an award key in awards_to_winner
+                #If so, increment the preexisting match, if not add it
+                for match in regex_matches:
+                    if awards_to_winner[key].getKeys():
+                        merged = False
 
-                    # if any(['actor', 'actress', 'director']) in key.lower():
-                    #     for person in people:
-                    #         if get_similarity_ratio(person, name) >= 0.67:
-                    #             official_name = person
-                    #     break
-                    # else:
-                    #     for film in films:
-                    #         if get_similarity_ratio(film, name) >= 0.8:
-                    #             official_name = film
-                    # if not official_name:
-                    #     continue
-
-                    # print(key, official_name)
-                    if name in awards_to_winner[key]:
-                       awards_to_winner[key].updateKV_Pair(name, awards_to_winner[key].get(name) + 1)
+                        for potential_winner in awards_to_winner[key].getKeys():
+                            #Attempt to remove 'for' and anything before it for non person winners
+                            if get_similarity_ratio(potential_winner, match) >= 0.50:
+                                merged = True
+                                awards_to_winner[key][potential_winner] += 1
+                                break
+                        if not merged:
+                            if match == 'RT' or match == 'GoldenGlobes':
+                                continue
+                            awards_to_winner[key].add(match, 1)
                     else:
-                        if name == 'RT' or name == 'GoldenGlobes':
-                            continue
-                        # merged = False
-                        # for potential_winner in awards_to_winner[key].getKeys():
-                        #     if get_similarity_ratio(potential_winner, name) >= 0.67:
-                        #         merged = True
-                        #         awards_to_winner[key].get(potential_winner).updateKVPair(potential_winner, awards_to_winner[key].get(potential_winner)+1)
-                        #
+                        awards_to_winner[key].add(match, 1)
 
-                        awards_to_winner[key].add(name, 1)
+                    # if match in awards_to_winner[key]:
+                    #    awards_to_winner[key].updateKV_Pair(match, awards_to_winner[key].get(match) + 1)
+                    # else:
+                    #     #Adds match, removes RT or GoldenGlobes trash entries
+                    #     if match == 'RT' or match == 'GoldenGlobes':
+                    #         continue
+                    #     awards_to_winner[key].add(match, 1)
 
+
+    for k, v in awards_to_winner.items():
+        awards_to_winner[k] = merge(v)
 
     # Note to Sam: Change this loop to remove all the keys that satisfy if statement
     for k, v in awards_to_winner.items():
-        if len(v.getKeys()) <= 0:
+
+        if len(v.getKeys()) == 0:
             continue
         print(k, v)
-
-    # print(awards_to_winner.keys())
-    # print(awards_to_winner['Best Original Song'])
-
 

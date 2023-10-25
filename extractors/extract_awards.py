@@ -1,9 +1,7 @@
-import re
-import datetime
 from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
 import pickle as pkl
-
+import re
 
 # award_references = ["best screenplay - motion picture", "best director - motion picture", "best performance by an actress in a television series - comedy or musical",
 #                     "best foreign language film", "best performance by an actor in a supporting role in a motion picture",
@@ -49,7 +47,7 @@ def extract_awards(tweets):
     # (?i) the .* award for lifetime achievement
     unmerged_awards = []
     merged_awards = SortedDict()
-    merged_awards_keywords = {}
+    # merged_awards_keywords = {}
 
     # Didn't get the Best Motion Picture nor Best Performation by Actor/Actress, nor cecil award
     award_regex = r'(?i)(?:best) [A-Z][a-zA-Z\s]+(?:award)?'
