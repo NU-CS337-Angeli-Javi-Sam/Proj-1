@@ -3,6 +3,13 @@ from difflib import SequenceMatcher
 import pickle as pkl
 import re
 
+# Finding out if winner is supposed to be a person:
+# Congrats person for thing: if person look for before the for and
+# if not look what's after the for 
+# Give priority for unigrams for movies and give bigrams for people
+# Give priority for unigram hashtags for movies perhaps 
+# Give priority for regexes that read Blank wins 
+
 #Gets the similarity ratio between two pieces of text
 def get_similarity_ratio(text1, text2):
     text1 = text1.lower()
