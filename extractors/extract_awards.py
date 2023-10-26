@@ -2,19 +2,7 @@ from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
 import pickle as pkl
 import re
-
-# award_references = ["best screenplay - motion picture", "best director - motion picture", "best performance by an actress in a television series - comedy or musical",
-#                     "best foreign language film", "best performance by an actor in a supporting role in a motion picture",
-#                     "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television",
-#                     "best motion picture - comedy or musical", "best performance by an actress in a motion picture - comedy or musical",
-#                     "best mini-series or motion picture made for television", "best original score - motion picture", "best performance by an actress in a television series - drama",
-#                     "best performance by an actress in a motion picture - drama", "cecil b. demille award", "best performance by an actor in a motion picture - comedy or musical",
-#                     "best motion picture - drama", "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",
-#                     "best performance by an actress in a supporting role in a motion picture", "best television series - drama",
-#                     "best performance by an actor in a mini-series or motion picture made for television", "best performance by an actress in a mini-series or motion picture made for television",
-#                     "best animated feature film", "best original song - motion picture", "best performance by an actor in a motion picture - drama",
-#                     "best television series - comedy or musical", "best performance by an actor in a television series - drama",
-#                     "best performance by an actor in a television series - comedy or musical", ]
+from utils.keywords import award_keywords
 
 # Run award regex on tweet text, if match:
 # Look through the context to see if any secondary validation regexes pass
@@ -87,6 +75,10 @@ def extract_awards(tweets):
 
     # print(unmerged_awards)
     for unmerged_award in unmerged_awards:
+        for keyword in award_keywords:
+            if keyword in unmerged_award:
+                continue
+
         merged = False
 
         for key in merged_awards.getKeys():
@@ -99,7 +91,10 @@ def extract_awards(tweets):
             merged_awards.add(unmerged_award, 1)
             # merged_awards_keywords[unmerged_award] = set()
 
-    with open('C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl', 'wb') as file:
+    print("before pickle")
+    filepath = './awards.pkl'
+
+    with open(filepath, 'wb') as file:
         pkl.dump(merged_awards, file)
 
     return merged_awards

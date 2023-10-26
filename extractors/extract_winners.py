@@ -5,10 +5,10 @@ import re
 
 # Finding out if winner is supposed to be a person:
 # Congrats person for thing: if person look for before the for and
-# if not look what's after the for 
+# if not look what's after the for
 # Give priority for unigrams for movies and give bigrams for people
-# Give priority for unigram hashtags for movies perhaps 
-# Give priority for regexes that read Blank wins 
+# Give priority for unigram hashtags for movies perhaps
+# Give priority for regexes that read Blank wins
 
 #Gets the similarity ratio between two pieces of text
 def get_similarity_ratio(text1, text2):
@@ -53,8 +53,9 @@ def extract_winners (tweets):
 
     #Extract awards from the output of the extract_awards method
     awards_list = None
+    filepath ="extractors/awards.pkl"
 
-    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
+    with open(filepath, "rb") as file:
         awards_list = pkl.load(file)
 
     #Proposition list: used as reference to remove reductant words from pieces of text for similarity_ratio

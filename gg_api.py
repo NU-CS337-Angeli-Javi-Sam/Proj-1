@@ -178,9 +178,9 @@ def main():
     hosts = find_hosts_in_tweets(tweets)
 
     #Extraction:
-    # extract_awards(tweets)
+    extract_awards(tweets)
     #
-    extract_winners(tweets)
+    #extract_winners(tweets)
 
     # tweet_stats = TweetStats()
 
