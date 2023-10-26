@@ -191,12 +191,12 @@ def main():
 
     # for tweet in tweets:
     #     tweet_stats.logTweet(tweet)
-    #
+
     # tweet_stats.analyzeTweets()
 
     #Set to get top 5 results for all stats (Change to get more or less)
     # tweet_stats.setK(10)
-    #
+
     # print('\n' + str(tweet_stats))
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]

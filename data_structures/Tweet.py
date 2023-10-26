@@ -14,10 +14,6 @@ class Tweet:
     self.__is_retweet  = data['text'].startswith("RT ")
     self.__has_emojis = self.__identify_emojis__(data['text'])
     # self.__language = classify(data['text'])[0]
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 
   def __tokenize__(self, text):
     tokens = []
