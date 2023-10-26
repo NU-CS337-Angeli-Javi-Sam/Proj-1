@@ -17,7 +17,6 @@ from helpers.winner import get_winners_dict
 from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
 
-
 def initialization_script():
     filename = sys.argv[1] if len(sys.argv) > 1 else "gg2013.json"  # First argument
     year = sys.argv[2] if len(sys.argv) > 2 else "2013"  # Second argument
@@ -124,8 +123,6 @@ def get_awards(year):
     """Awards is a list of strings. Do NOT change the name
     of this function or what it returns."""
     return get_awards_list(year)
-
-
 
 def get_nominees(year):
     """Nominees is a dictionary with the hard coded award

@@ -1,4 +1,6 @@
 __pycache__
-output/
 
+IMDb datasets/
+output/
+>>>>>>> main
 .DS_Store
