@@ -6,6 +6,7 @@ from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
 from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
+from data_structures.TweetStats import TweetStats
 
 from helpers.awards import get_awards_list
 from helpers.hosts import find_hosts_in_tweets, get_hosts_list
@@ -180,8 +181,8 @@ def main():
     hosts = find_hosts_in_tweets(tweets)
 
     #Extraction:
-    extract_awards(tweets)
-
+    # extract_awards(tweets)
+    #
     extract_winners(tweets)
 
     # tweet_stats = TweetStats()
@@ -198,7 +199,7 @@ def main():
 
     #Set to get top 5 results for all stats (Change to get more or less)
     # tweet_stats.setK(10)
-
+    #
     # print('\n' + str(tweet_stats))
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]

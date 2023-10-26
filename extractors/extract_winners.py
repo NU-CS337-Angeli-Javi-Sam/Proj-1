@@ -21,16 +21,25 @@ def remove_endphrase (text, words):
         if word in text:
             text = text[:text.find(word)]
     return text
-
 def remove_frontphrase (text, words):
     for word in words:
         if word in text:
             text = text[text.find(word):]
     return text
 
-
 def merge (list):
-    pass
+    keys = list.getSortedKeys()
+    merged = []
+
+    for key in keys:
+        for other_key in keys[keys.index(key)+1:]:
+            if other_key in merged:
+                continue
+            if get_similarity_ratio(key, other_key) >= 0.67:
+                list[key] += list[other_key]
+                list[other_key] = 0
+                merged.append(other_key)
+    return list
 
 
 def extract_winners (tweets):
@@ -73,38 +82,43 @@ def extract_winners (tweets):
                 #Check if any of the matches are already mapped to an award key in awards_to_winner
                 #If so, increment the preexisting match, if not add it
                 for match in regex_matches:
-                    if awards_to_winner[key].getKeys():
-                        merged = False
-
-                        for potential_winner in awards_to_winner[key].getKeys():
-                            #Attempt to remove 'for' and anything before it for non person winners
-                            if get_similarity_ratio(potential_winner, match) >= 0.50:
-                                merged = True
-                                awards_to_winner[key][potential_winner] += 1
-                                break
-                        if not merged:
-                            if match == 'RT' or match == 'GoldenGlobes':
-                                continue
-                            awards_to_winner[key].add(match, 1)
-                    else:
-                        awards_to_winner[key].add(match, 1)
-
-                    # if match in awards_to_winner[key]:
-                    #    awards_to_winner[key].updateKV_Pair(match, awards_to_winner[key].get(match) + 1)
+                    # if awards_to_winner[key].getKeys():
+                    #     merged = False
+                    #
+                    #     for potential_winner in awards_to_winner[key].getKeys():
+                    #         #Attempt to remove 'for' and anything before it for non person winners
+                    #         if get_similarity_ratio(potential_winner, match) >= 0.50:
+                    #             merged = True
+                    #             awards_to_winner[key][potential_winner] += 1
+                    #             break
+                    #     if not merged:
+                    #         if match == 'RT' or match == 'GoldenGlobes':
+                    #             continue
+                    #         awards_to_winner[key].add(match, 1)
                     # else:
-                    #     #Adds match, removes RT or GoldenGlobes trash entries
-                    #     if match == 'RT' or match == 'GoldenGlobes':
-                    #         continue
                     #     awards_to_winner[key].add(match, 1)
 
+                    if match in awards_to_winner[key]:
+                       awards_to_winner[key].updateKV_Pair(match, awards_to_winner[key].get(match) + 1)
+                    else:
+                        #Adds match, removes RT or GoldenGlobes trash entries
+                        if match == 'RT' or match == 'GoldenGlobes' or match == 'Golden Globes':
+                            continue
+                        awards_to_winner[key].add(match, 1)
 
-    for k, v in awards_to_winner.items():
-        awards_to_winner[k] = merge(v)
 
-    # Note to Sam: Change this loop to remove all the keys that satisfy if statement
-    for k, v in awards_to_winner.items():
+    #Removes all awards that don't have winners or only have a few "winner" mentions
+    #Merges alike winners for
+    keys = list(awards_to_winner.keys())
+    relevant_awards = []
 
-        if len(v.getKeys()) == 0:
-            continue
-        print(k, v)
+    #Attempt to remove irrelevant awards
+    for key in keys:
+        if len(awards_to_winner[key].getKeys()) >= 3:
+            if len(key) > 5:
+                relevant_awards.append(key)
 
+    for award in relevant_awards:
+        # print('Before: ', key)
+        awards_to_winner[award] = merge(awards_to_winner[award])
+        print(award, awards_to_winner[award].getTop(3))

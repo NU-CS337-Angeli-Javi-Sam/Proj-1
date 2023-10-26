@@ -76,7 +76,7 @@ class SortedDict:
     def __setitem__(self, key, value):
         self.__internalDict[key] = value
 
-    #Not done: Will allow del keyword usage
-    # def __del__(self):
-    #     pass
+    #Allows del to work on dict
+    # def __del__(self, key):
+    #     del self.__internalDict[key]
 
