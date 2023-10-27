@@ -17,6 +17,7 @@ from helpers.winner import get_winners_dict
 from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
+from extractors.extract_presenters import extract_presenters
 
 def initialization_script():
     filename = sys.argv[1] if len(sys.argv) > 1 else "gg2013.json"  # First argument
@@ -179,10 +180,33 @@ def main():
     hosts = find_hosts_in_tweets(tweets)
 
     #Extraction:
-    # extract_awards(tweets)
-    #
-    # extract_winners(tweets)
-    extract_nominees(tweets)
+    awards = extract_awards(tweets) # SortedDict("award", count)
+    awards_winners = extract_winners(tweets, awards) # {"award": SortedDict("potential winners", count)}
+    awards_nominees = extract_nominees(tweets, awards_winners) # {"award": SortedDict("potential nominees", count)}
+    awards_presenters = extract_presenters(tweets, awards_winners) # {"award": ["presenters"]}
+
+    good_awards = []
+    for award_name in awards_winners.keys():
+        try:
+            presenters = awards_presenters[award_name]
+        except:
+            presenters = []
+
+        try:
+            nominees = [a[0] for a in awards_nominees[award_name].getTop(5)]
+        except:
+            nominees = []
+
+        try:
+            winner = awards_winners[award_name].getTop(1)[0][0]
+        except:
+            winner = ""
+
+        award_item = Award(award_name, presenters, nominees, winner)
+        good_awards.append(award_item)
+
+    good_awards_ceremony = AwardsCeremony(hosts, good_awards)
+
 
     # tweet_stats = TweetStats()
 
@@ -230,10 +254,10 @@ def main():
     sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
 
     with open(text_output_filepath, "w") as file:
-        file.write(str(sample_awards_ceremony))
+        file.write(str(good_awards_ceremony))
 
     with open(json_output_filepath, "w") as file:
-        json.dump(sample_awards_ceremony.to_json(), file)
+        json.dump(good_awards_ceremony.to_json(), file)
 
 
 if __name__ == "__main__":

@@ -95,10 +95,11 @@ def extract_awards(tweets):
                     merged_awards.add(unmerged_award, 1)
                     # merged_awards_keywords[unmerged_award] = set()
 
-        for key in merged_awards.getSortedKeys():
-            print(key, merged_awards[key])
+        # for key in merged_awards.getSortedKeys():
+        #     print(key, merged_awards[key])
 
         with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", 'wb') as file:
             pkl.dump(merged_awards, file)
 
+        # print(merged_awards)
         return merged_awards

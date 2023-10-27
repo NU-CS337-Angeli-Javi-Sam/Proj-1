@@ -17,7 +17,7 @@ def get_similarity_ratio(text1, text2):
 
     return SequenceMatcher(None, text1, text2).ratio()
 
-# Removes reductant words
+# Removes reluctant words
 def remove_words(text, words, replacement):
     for word in words:
         if word in text:
@@ -49,13 +49,14 @@ def merge (list):
     return list
 
 
-def extract_winners (tweets):
+def extract_winners (tweets, awards_list):
 
     #Extract awards from the output of the extract_awards method
-    awards_list = None
+    # awards_list = None
 
-    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
-        awards_list = pkl.load(file)
+    # with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
+    #     awards_list = pkl.load(file)
+    # print(awards_list)
 
     #Proposition list: used as reference to remove reductant words from pieces of text for similarity_ratio
     minor_words = [' in ', ' on ', ' for ', ' a ', ' by ', ' an ', ' or ', ' and ', ' the ', ' nor ', ' yet ', ' but ',
@@ -128,7 +129,9 @@ def extract_winners (tweets):
     for award in relevant_awards:
         # print('Before: ', key)
         awards_to_winner[award] = merge(awards_to_winner[award])
-        print(award, awards_to_winner[award].getTop(3))
+        # print(award, awards_to_winner[award].getTop(3))
 
     with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", 'wb') as file:
         pkl.dump(awards_to_winner, file)
+
+    return awards_to_winner
