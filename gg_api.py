@@ -16,6 +16,7 @@ from helpers.winner import get_winners_dict
 
 from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
+from extractors.extract_nominees import extract_nominees
 
 def initialization_script():
     filename = sys.argv[1] if len(sys.argv) > 1 else "gg2013.json"  # First argument
@@ -178,9 +179,10 @@ def main():
     hosts = find_hosts_in_tweets(tweets)
 
     #Extraction:
-    extract_awards(tweets)
+    # extract_awards(tweets)
     #
-    #extract_winners(tweets)
+    # extract_winners(tweets)
+    extract_nominees(tweets)
 
     # tweet_stats = TweetStats()
 

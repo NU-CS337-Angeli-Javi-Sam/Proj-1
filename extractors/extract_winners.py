@@ -53,9 +53,8 @@ def extract_winners (tweets):
 
     #Extract awards from the output of the extract_awards method
     awards_list = None
-    filepath ="extractors/awards.pkl"
 
-    with open(filepath, "rb") as file:
+    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
         awards_list = pkl.load(file)
 
     #Proposition list: used as reference to remove reductant words from pieces of text for similarity_ratio
@@ -130,3 +129,6 @@ def extract_winners (tweets):
         # print('Before: ', key)
         awards_to_winner[award] = merge(awards_to_winner[award])
         print(award, awards_to_winner[award].getTop(3))
+
+    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", 'wb') as file:
+        pkl.dump(awards_to_winner, file)
