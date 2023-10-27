@@ -17,17 +17,21 @@ def get_similarity_ratio(text1, text2):
 
     return SequenceMatcher(None, text1, text2).ratio()
 
-# Removes reluctant words
+# Removes
 def remove_words(text, words, replacement):
     for word in words:
         if word in text:
             text.replace(word, replacement)
     return text
+
+#Removes
 def remove_endphrase (text, words):
     for word in words:
         if word in text:
             text = text[:text.find(word)]
     return text
+
+#Removes
 def remove_frontphrase (text, words):
     for word in words:
         if word in text:
@@ -65,6 +69,7 @@ def extract_winners (tweets, awards_list):
 
     #Dict mapping awards to potential winners, keys are winners, values are sort dictionaries of winner candidates
     awards_to_winner = {}
+    # print(awards_list.getKeys())
 
     for key in awards_list.getKeys():
         awards_to_winner[key] = SortedDict()
@@ -120,6 +125,7 @@ def extract_winners (tweets, awards_list):
     keys = list(awards_to_winner.keys())
     relevant_awards = []
 
+    # print(awards_to_winner['Lifetime Achievement Award'])
     #Attempt to remove irrelevant awards
     for key in keys:
         if len(awards_to_winner[key].getKeys()) >= 3:
@@ -131,6 +137,7 @@ def extract_winners (tweets, awards_list):
         awards_to_winner[award] = merge(awards_to_winner[award])
         # print(award, awards_to_winner[award].getTop(3))
 
+    # print(awards_to_winner['Lifetime Achievement Award'])
     with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", 'wb') as file:
         pkl.dump(awards_to_winner, file)
 

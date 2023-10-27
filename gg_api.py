@@ -27,7 +27,8 @@ def initialization_script():
 
 def load_tweet_data(data_directory, filename):
     filepath = os.path.join(data_directory, filename)
-
+    print(filepath)
+    filepath = 'C:\\Users\\samj9\\PycharmProjects\\Proj-1\\data\\gg2013.json'
     tweets = []
 
     # Check if the JSON file exists in the specified directory
@@ -164,6 +165,8 @@ def main():
     input_directory = "data"
     output_directory = "output"
 
+    output_directory = 'C:\\Users\\samj9\\PycharmProjects\\Proj-1\\output'
+
     filename, year = initialization_script()
 
     text_output_filepath = f"{output_directory}/output{year}.txt"
@@ -177,7 +180,6 @@ def main():
     tweets = create_tweet_objects(tweet_data)
 
     hosts = find_hosts_in_tweets(tweets)
-
     #Extraction:
     awards = extract_awards(tweets) # SortedDict("award", count)
     awards_winners = extract_winners(tweets, awards) # {"award": SortedDict("potential winners", count)}
@@ -186,6 +188,7 @@ def main():
 
     good_awards = []
     for award_name in awards_winners.keys():
+        # print(award_name)
         try:
             presenters = awards_presenters[award_name]
         except:
@@ -251,6 +254,8 @@ def main():
       ], "ed harris")
 
     sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
+
+    # print(good_awards_ceremony)
 
     with open(text_output_filepath, "w") as file:
         file.write(str(good_awards_ceremony))

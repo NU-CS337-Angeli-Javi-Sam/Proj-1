@@ -5,6 +5,11 @@ Presenters:
 Nominees: 
 Winner: Ben Affleck
 
+Award: Lifetime Achievement Award
+Presenters: 
+Nominees: 
+Winner: Jodie Foster
+
 Award: Best Motion Picture
 Presenters: Julia Roberts
 Nominees: 
@@ -287,6 +292,11 @@ Presenters:
 Nominees: 
 Winner: Don Cheadle For House Of Lies
 
+Award: Best Role Yet
+Presenters: 
+Nominees: 
+Winner: Lilofanfiction
+
 Award: Best Actor Comedy And The Entire World Collectively
 Presenters: 
 Nominees: 
@@ -332,11 +342,6 @@ I Think Brenda Chapman Should
 Presenters: 
 Nominees: 
 Winner: Brave
-
-Award: Best Life Time Achievement In Movies
-Presenters: 
-Nominees: 
-Winner: 
 
 Award: Best Series Of Non Sequiturs
 Presenters: 

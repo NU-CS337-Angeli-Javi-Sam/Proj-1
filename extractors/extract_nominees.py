@@ -31,6 +31,8 @@ def extract_nominees(tweets, awards_winners_list):
     # Get award names
     awards = existing_awards_winners.keys()
 
+    # print(awards)
+
     # nominee_regexes = [r'({Winner}.*nomin.*([A-Z][a-zA-Z/s]*)+)|(([A-Z][a-zA-Z/s]*)+.*nomin.*{Winner})']
 
     for award in awards:
