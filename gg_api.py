@@ -25,7 +25,6 @@ def initialization_script():
 
     return filename, year
 
-
 def load_tweet_data(data_directory, filename):
     filepath = os.path.join(data_directory, filename)
 
