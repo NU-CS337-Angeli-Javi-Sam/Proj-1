@@ -19,6 +19,8 @@ from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
 
+import pickle as pkl
+
 def initialization_script():
     filename = sys.argv[1] if len(sys.argv) > 1 else "gg2013.json"  # First argument
     year = sys.argv[2] if len(sys.argv) > 2 else "2013"  # Second argument
@@ -256,6 +258,9 @@ def main():
     sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
 
     # print(good_awards_ceremony)
+
+    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_ceremony.pkl", 'wb') as file:
+        pkl.dump(good_awards_ceremony, file)
 
     with open(text_output_filepath, "w") as file:
         file.write(str(good_awards_ceremony))
