@@ -58,6 +58,9 @@ class TweetStats:
     def getTopHashTags (self):
         return self.__topHashtags
 
+    def getTopTweeters(self):
+        return self.__topTweeters
+
     #This function assumes that tweets fed into the tweetStats object chronologically
     #Simply collects all the tweets and puts them into time buckets and a tweet heap for processing
     def logTweet (self, tweet):
@@ -159,11 +162,11 @@ class TweetStats:
         pass
 
     def __str__(self):
-        output = "Tweet Stats: \n\n"
+        output = "TweetStats: \n\n"
 
-        output += "Histograms:\n"
-        for key, value in self.__histograms.items():
-            output += f"{key}: {value}\n"
+        # output += "Histograms:\n"
+        # for key, value in self.__histograms.items():
+        #     output += f"{key}: {value}\n"
 
         output += "Top Retweeted:\n"
         # output += self.__topRetweeted.__str__()

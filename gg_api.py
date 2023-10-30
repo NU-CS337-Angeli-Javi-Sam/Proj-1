@@ -148,7 +148,6 @@ def get_presenters(year):
     name of this function or what it returns."""
     return get_presenters_dict(year)
 
-
 def pre_ceremony():
     """This function loads/fetches/processes any data your program
     will use, and stores that data in your DB or in a json, csv, or
@@ -181,6 +180,15 @@ def main():
 
     tweets = create_tweet_objects(tweet_data)
 
+    tweet_stats = TweetStats()
+
+    for tweet in tweets:
+        tweet_stats.logTweet(tweet)
+
+    tweet_stats.analyzeTweets()
+
+    tweet_stats.setK(10)
+
     hosts = find_hosts_in_tweets(tweets)
     #Extraction:
     awards = extract_awards(tweets) # SortedDict("award", count)
@@ -209,25 +217,13 @@ def main():
         award_item = Award(award_name, presenters, nominees, winner)
         good_awards.append(award_item)
 
-    good_awards_ceremony = AwardsCeremony(hosts, good_awards)
+    good_awards_ceremony = AwardsCeremony(hosts, good_awards, tweet_stats)
 
-
-    # tweet_stats = TweetStats()
 
     # for tweet in tweets[10000:10040]:
     #     print("")
     #     print("original tweet:", tweet.get_original_text())
     #     print(tweet.get_tokens())
-
-    # for tweet in tweets:
-    #     tweet_stats.logTweet(tweet)
-
-    # tweet_stats.analyzeTweets()
-
-    #Set to get top 5 results for all stats (Change to get more or less)
-    # tweet_stats.setK(10)
-
-    # print('\n' + str(tweet_stats))
 
     # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
 
@@ -255,7 +251,7 @@ def main():
         "eric stonestreet"
       ], "ed harris")
 
-    sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
+    # sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
 
     # print(good_awards_ceremony)
 
