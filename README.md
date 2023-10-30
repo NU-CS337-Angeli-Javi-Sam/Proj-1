@@ -46,6 +46,13 @@ The output of this script is two files output to the `output` directory:
   `Nominees: {award_nominees}`
   `Winner: {award_winner}`
 
+  `TweetStats:`
+  `top_mentions: {top_mentions}`
+  `top_retweets: {top_retweeted_accs : retweets}`
+  `top_hashtags: {top_hashtags}`
+  `top_tweeters: {top_tweeters}`
+  
+
 2. A JSON file named `output.json` containing the JSON representation of above:
 
 ## Rationale
