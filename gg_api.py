@@ -4,7 +4,6 @@ import sys
 
 from data_structures.Award import Award
 from data_structures.AwardsCeremony import AwardsCeremony
-from data_structures.Entity import Entity
 from data_structures.Tweet import Tweet
 from data_structures.TweetStats import TweetStats
 
@@ -18,7 +17,6 @@ from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
-from extractors.extract_more import extract_more_info
 
 import pickle as pkl
 
@@ -30,7 +28,8 @@ def initialization_script():
 
 def load_tweet_data(data_directory, filename):
     filepath = os.path.join(data_directory, filename)
-    
+    print(filepath)
+
     tweets = []
 
     # Check if the JSON file exists in the specified directory
@@ -52,7 +51,6 @@ def load_tweet_data(data_directory, filename):
 
     return tweets
 
-
 def create_tweet_objects(tweet_data):
     tweets = []
 
@@ -63,65 +61,10 @@ def create_tweet_objects(tweet_data):
 
     return tweets
 
-
-def print_test_info(tweets):
-    some_tweets = tweets[:20]
-    for tweet in some_tweets:
-        print("")
-        print(tweet)
-        # print(tweet.get_tokens())
-
-    print("")
-    print("Sample Entity:")
-
-    sample_entity = Entity("My name")
-    sample_entity.set_name("Javi")
-
-    print(sample_entity)
-
-    print("")
-    print("Sample Award:")
-
-    sample_award = Award(
-        "best screenplay - motion picture",
-        ["robert pattinson", "amanda seyfried"],
-        ["zero dark thirty", "lincoln", "silver linings playbook", "argo"],
-        "argo",
-    )
-
-    print(sample_award)
-
-    print("")
-    print("Sample Awards Ceremony:")
-
-    sample_awards_ceremony = AwardsCeremony(
-        "Golden Globes",
-        "Madison Square Garden",
-        "9:00pm",
-        "11:00pm",
-        ["amy poehler", "tina fey"],
-        [sample_award],
-    )
-
-    print(sample_awards_ceremony)
-    print(sample_awards_ceremony.to_json())
-
-    # print("")
-    # print("")
-    # print("")
-    # print("Testing API")
-    # print("These are the awards: ", get_awards("2020", sample_awards_ceremony))
-    # print("These are the hosts: ", get_hosts("2020", sample_awards_ceremony))
-    # print("These are the presenters: ", get_presenters("2020", sample_awards_ceremony))
-    # print("These are the nominees: ", get_nominees("2020", sample_awards_ceremony))
-    # print("These are the winners: ", get_winner("2020", sample_awards_ceremony))
-
-
 def get_hosts(year):
     """Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns."""
     return get_hosts_list(year)
-
 
 def get_awards(year):
     """Awards is a list of strings. Do NOT change the name
@@ -175,25 +118,55 @@ def main():
 
     tweets = create_tweet_objects(tweet_data)
 
+    print("Creating Tweet Objects")
+
     tweet_stats = TweetStats()
+
+    print("Tweet Objects Created")
+    print()
 
     for tweet in tweets:
         tweet_stats.logTweet(tweet)
 
+    print("Analyzing Tweets")
+
     tweet_stats.analyzeTweets()
+
+    print("Tweets Analyzed")
+    print()
 
     tweet_stats.setK(10)
 
-    hosts = find_hosts_in_tweets(tweets)
-    #Extraction:
-    awards = extract_awards(tweets) # SortedDict("award", count)
-    awards_winners = extract_winners(tweets, awards) # {"award": SortedDict("potential winners", count)}
-    awards_nominees = extract_nominees(tweets, awards_winners) # {"award": SortedDict("potential nominees", count)}
-    awards_presenters = extract_presenters(tweets, awards_winners) # {"award": ["presenters"]}
+    print("Identifying Hosts")
 
+    hosts = find_hosts_in_tweets(tweets)
+
+    print("Hosts Identified")
+    print()
+
+    #Extraction:
+    print("Extracting Awards")
+    awards = extract_awards(tweets) # SortedDict("award", count)
+    print("Awards Extracted")
+    print()
+
+    print("Extracting Winners")
+    awards_winners = extract_winners(tweets, awards) # {"award": SortedDict("potential winners", count)}
+    print("Winners Extracted")
+    print()
+
+    print("Extracting Nominees")
+    awards_nominees = extract_nominees(tweets, awards_winners) # {"award": SortedDict("potential nominees", count)}
+    print("Nominees Extracted")
+    print()
+    print("Extracting Presenters")
+    awards_presenters = extract_presenters(tweets, awards_winners) # {"award": ["presenters"]}
+    print("Presenters Extracted")
+
+    print("Compiling Data")
     good_awards = []
     for award_name in awards_winners.keys():
-        # print(award_name)
+
         try:
             presenters = awards_presenters[award_name]
         except:
@@ -214,53 +187,9 @@ def main():
 
     good_awards_ceremony = AwardsCeremony(hosts, good_awards, tweet_stats)
 
+    print("Data Compiled")
 
-    ###### SECOND PASS TESTING
-    with open("E:\ACADEMIC\\2023 - 2024\\2023 FALL QUARTER\COMP_SCI 337\Proj-1\extractors\\award_ceremony.pkl", 'rb') as file:
-        good_awards_ceremony = pkl.load(file)
-
-    extract_more_info(tweets, good_awards_ceremony.get_awards())
-    
-    exit(0)
-    ###### END OF SECOND PASS TESTING
-
-    # for tweet in tweets[10000:10040]:
-    #     print("")
-    #     print("original tweet:", tweet.get_original_text())
-    #     print(tweet.get_tokens())
-
-    # tweets = [tweet for tweet in tweets if not tweet.is_retweet() and not tweet.has_emojis()]
-
-    # tweets = [tweet for tweet in tweets if tweet.get_language() == 'en']
-
-    # print(f"Number of English non retweets without emojis: {len(tweets)}")
-
-    sample_award = Award("best screenplay - motion picture", [
-        "robert pattinson",
-        "amanda seyfried"
-      ], [
-        "zero dark thirty",
-        "lincoln",
-        "silver linings playbook",
-        "argo"
-      ], "argo" )
-
-    sample_award_2 = Award("best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",[
-        "kristen bell",
-        "john krasinski"
-      ], [
-        "max greenfield",
-        "danny huston",
-        "mandy patinkin",
-        "eric stonestreet"
-      ], "ed harris")
-
-    # sample_awards_ceremony = AwardsCeremony(hosts, [sample_award, sample_award_2])
-
-    # print(good_awards_ceremony)
-
-    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_ceremony.pkl", 'wb') as file:
-        pkl.dump(good_awards_ceremony, file)
+    print("Writing Data")
 
     with open(text_output_filepath, "w") as file:
         file.write(str(good_awards_ceremony))
@@ -268,5 +197,6 @@ def main():
     with open(json_output_filepath, "w") as file:
         json.dump(good_awards_ceremony.to_json(), file)
 
+    print("Data Written")
 if __name__ == "__main__":
     main()

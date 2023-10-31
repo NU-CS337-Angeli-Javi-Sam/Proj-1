@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def import_awards_ceremony(year):
     """
     Import and return awards ceremony data from a JSON file for a specific year.

@@ -13,7 +13,7 @@ Link to Repository: [NU-CS337-Angeli-Javi-Sam/Proj-1](https://github.com/NU-CS33
 
 ## External Packages Used
 
--
+- Pandas
 -
 -
 
@@ -51,7 +51,7 @@ The output of this script is two files output to the `output` directory:
   `top_retweets: {top_retweeted_accs : retweets}`
   `top_hashtags: {top_hashtags}`
   `top_tweeters: {top_tweeters}`
-  
+
 
 2. A JSON file named `output.json` containing the JSON representation of above:
 

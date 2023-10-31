@@ -1,5 +1,4 @@
 import re
-import pickle as pkl
 from data_structures.SortedDict import SortedDict
 
 person_keywords = [
@@ -16,8 +15,7 @@ bad_words = [
 ]
 
 def extract_nominees(tweets, awards_winners_list):
-    # with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", "rb") as file:
-    #     awards_winners_list = pkl.load(file)
+
 
     # Remove awards that don't have winners
     existing_awards_winners = {}
@@ -59,7 +57,7 @@ def extract_nominees(tweets, awards_winners_list):
 
         for regex in regex_lst:
             # Customize regex for each winner
-            if "Winner in regex":
+            if "{Winner}" in regex:
                 regex = regex.replace('{Winner}', top_winner)
 
             for tweet in tweets:
@@ -72,28 +70,6 @@ def extract_nominees(tweets, awards_winners_list):
                         elif "Golden" not in match:
                             awards_nominees[award][match] = 1
 
-    for award in awards_nominees:
-        pass
-        # print("TOP_WINNER: ", existing_awards_winners[award].getTop(1)[0][0], "NOMINEE_MATCHES: ", awards_nominees[award])
+
 
     return awards_nominees
-    # for award_name in awards:
-    #     print(award_name)
-    #     # For each award, get the list of possible winners.
-    #     for winner_name in awards_winners_list[award_name].getSortedKeys():
-    #         print(winner_name)
-    #         # For each winner, go through all the tweets and see if we can find the nominee
-    #         for tweet in tweets:
-    #             regex_matches = []
-    #
-    #             # For each tweet, run each regex expression to find nominee associated with each award and winner.
-    #             for nominee_regex in nominee_regexes:
-    #                 temp_nom_regex = nominee_regex.replace('{Winner}', winner_name)
-    #
-    #                 matches = re.findall(temp_nom_regex, tweet.get_original_text())
-    #
-    #                 regex_matches.extend(matches)
-    #
-    #             for regex_match in regex_matches:
-    #                 print(regex_match)
-    #

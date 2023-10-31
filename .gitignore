@@ -2,3 +2,5 @@ __pycache__
 
 IMDb datasets/
 .DS_Store
+
+myenv/

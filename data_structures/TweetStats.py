@@ -89,7 +89,6 @@ class TweetStats:
         # print(self.__histograms)
 
     def analyzeTweets(self):
-        print("analyzing tweets")
         # print("Creating Word Clouds")
         # # Creates Word clouds for histograms
         # for v in self.__histograms.values():

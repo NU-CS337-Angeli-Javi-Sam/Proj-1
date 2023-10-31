@@ -15,15 +15,16 @@ Extract awards method
 # (?i) the .* award for lifetime achievement
 
 
-#Gets the similarity ratio between 2 strings
+# Gets the similarity ratio between 2 strings
 def get_similarity_ratio(text1, text2, words):
     text1 = text1.lower()
     text2 = text2.lower()
 
-    text1 = remove_words(text1, words, ' ')
-    text2 = remove_words(text2, words, ' ')
+    text1 = remove_words(text1, words, " ")
+    text2 = remove_words(text2, words, " ")
 
     return SequenceMatcher(None, text1, text2).ratio()
+
 
 #
 def remove_words(text, words, replacement):
@@ -35,7 +36,7 @@ def remove_words(text, words, replacement):
 def remove_endphrase (text, words):
     for word in words:
         if word in text:
-            text = text[:text.find(word)]
+            text = text[: text.find(word)]
     return text
 
 def extract_awards(tweets):
@@ -78,10 +79,8 @@ def extract_awards(tweets):
             # Do context matching
             for validation_regex in validation_regexes:
                 # If context matching succeeds, add to a bucket of each award occurrence
-                if re.search(validation_regex, tweet.get_original_text(), re.IGNORECASE):
+                if re.search(validation_regex, tweet.get_original_text()):
                     for match in regex_matches:
-                        # if 'lifetime' in match.lower():
-                        #     print(match)
 
                         match = remove_endphrase(match, trash_words)
 
@@ -93,7 +92,6 @@ def extract_awards(tweets):
                             unmerged_awards.append(match)
 
     for unmerged_award in unmerged_awards:
-        # print(unmerged_award)
 
         valid = False
 
@@ -106,24 +104,15 @@ def extract_awards(tweets):
 
             for key in merged_awards.getKeys():
                 if get_similarity_ratio(unmerged_award, key, minor_words) >= 0.67:
-                    # merged_awards_keywords[key].add(unmerged_award.strip())
                     merged_awards.updateKV_Pair(key, merged_awards.get(key) + 1)
                     merged = True
                     break
             if not merged:
                 merged_awards.add(unmerged_award, 1)
-                # merged_awards_keywords[unmerged_award] = set()
-
-    # print("All awards")
-    # for merged_award in merged_awards.getKeys():
-    #     print(merged_award)
 
     # Delete all awards with only one instance
-    for key in merged_awards.getKeys():
-        if merged_awards[key] <= 1:
-            merged_awards.remove(key)
-
-    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", 'wb') as file:
-        pkl.dump(merged_awards, file)
+    # for key in merged_awards.getKeys():
+    #     if merged_awards[key] <= 1:
+    #         merged_awards.remove(key)
 
     return merged_awards

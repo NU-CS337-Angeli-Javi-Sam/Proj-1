@@ -1,3 +1,4 @@
+# A list of keywords from IMDB related potentially to award names.
 award_keywords = [
     "movie",
     "series",
