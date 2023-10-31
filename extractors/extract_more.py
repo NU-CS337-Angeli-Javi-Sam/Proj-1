@@ -26,11 +26,11 @@ def extract_more_winners(filtered_tweets, award, nominees, presenters):
     pass
 
 # Get more nominees
-def extract_more_nominees(award, winner, nominees, presenters):
+def extract_more_nominees(filtered_tweets, award, winner, nominees, presenters):
     pass
 
 # Get more presenters
-def extract_more_presenters(award, winner, nominees, presenters):
+def extract_more_presenters(filtered_tweets, award, winner, nominees, presenters):
     pass
 
 # Use our first round of extraction to inform a second round
@@ -54,14 +54,13 @@ def extract_more_info(tweets, awards):
         relevant_tweets = filter_tweets(tweets, award_i, winner_i, nominees_i, presenters_i)
 
         # Get winners if award doesn't have one
-        if not winner[i]:
-            winner = extract_more_winners(relevant_tweets, award_i, nominees_i, presenters_i)
+        if not winner_i:
+            more_winner_i = extract_more_winners(relevant_tweets, award_i, nominees_i, presenters_i)
 
         # Get more nominees for each award
-
+        more_nominees_i = extract_more_nominees(relevant_tweets, award_i, winner_i, nominees_i, presenters_i)
 
         # Get more presenters for each award
-
-        # Validate that extracted data is relevant
+        more_presenters_i = extract_more_presenters(relevant_tweets, award_i, winner_i, nominees_i, presenters_i)
 
         # Correct spelling for each item in our awards_ceremony based on database
