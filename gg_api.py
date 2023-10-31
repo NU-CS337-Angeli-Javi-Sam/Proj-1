@@ -18,6 +18,7 @@ from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
+from extractors.extract_more import extract_more_info
 
 import pickle as pkl
 
@@ -29,8 +30,7 @@ def initialization_script():
 
 def load_tweet_data(data_directory, filename):
     filepath = os.path.join(data_directory, filename)
-    print(filepath)
-    filepath = 'C:\\Users\\samj9\\PycharmProjects\\Proj-1\\data\\gg2013.json'
+    
     tweets = []
 
     # Check if the JSON file exists in the specified directory
@@ -134,13 +134,11 @@ def get_nominees(year):
     the name of this function or what it returns."""
     return get_nominees_dict(year)
 
-
 def get_winner(year):
     """Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns."""
     return get_winners_dict(year)
-
 
 def get_presenters(year):
     """Presenters is a dictionary with the hard coded award
@@ -155,7 +153,6 @@ def pre_ceremony():
     Do NOT change the name of this function or what it returns."""
     pass
 
-
 def main():
     """This function calls your program. Typing "python gg_api.py"
     will run this function. Or, in the interpreter, import gg_api
@@ -165,8 +162,6 @@ def main():
 
     input_directory = "data"
     output_directory = "output"
-
-    output_directory = 'C:\\Users\\samj9\\PycharmProjects\\Proj-1\\output'
 
     filename, year = initialization_script()
 
@@ -220,6 +215,15 @@ def main():
     good_awards_ceremony = AwardsCeremony(hosts, good_awards, tweet_stats)
 
 
+    ###### SECOND PASS TESTING
+    with open("E:\ACADEMIC\\2023 - 2024\\2023 FALL QUARTER\COMP_SCI 337\Proj-1\extractors\\award_ceremony.pkl", 'rb') as file:
+        good_awards_ceremony = pkl.load(file)
+
+    extract_more_info(tweets, good_awards_ceremony.get_awards())
+    
+    exit(0)
+    ###### END OF SECOND PASS TESTING
+
     # for tweet in tweets[10000:10040]:
     #     print("")
     #     print("original tweet:", tweet.get_original_text())
@@ -263,7 +267,6 @@ def main():
 
     with open(json_output_filepath, "w") as file:
         json.dump(good_awards_ceremony.to_json(), file)
-
 
 if __name__ == "__main__":
     main()
