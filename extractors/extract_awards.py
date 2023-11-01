@@ -4,13 +4,6 @@ import re
 from utils.keywords import AWARDS_KEYWORDS, TRASH_KEYWORDS, MINOR_KEYWORDS
 from utils.regex import AWARDS_REGEX, AWARDS_VALIDATION_REGEX
 
-"""
-Extract awards method
-    Given: Tweet Objects
-    Returns: SortDict of Award_names to Confidence Vote
-"""
-
-# Gets the similarity ratio between 2 strings
 def get_similarity_ratio(text1, text2, words):
     """
     Calculate the similarity ratio between two texts after removing specified words.

@@ -1,41 +1,23 @@
 from data_structures.SortedDict import SortedDict
 from data_structures.TweetHistogram import TweetHistogram
-import datetime
-
 
 class TweetStats:
-    """
-    Aggregation of all the tweet metadata
-    """
+
     def __init__(self, duration = 60000):
-        #Tuple(Start, End) to Histogram relation
         self.__histograms = {}
-        #Retweeted Acc to Retweet
         self.__retweets = {}
-        #Retweeted Acc to # Retweets
         self.__topRetweeted = SortedDict()
-        #Mentioned Acc to # Mentions
         self.__topMentioned = SortedDict()
-        #Hashtag to # Hashtags
         self.__topHashtags = SortedDict()
-        #Accounts to # Tweets
         self.__topTweeters = SortedDict()
 
-        #Tweet collector
         self.__tweetLog = []
 
-        #Used for printing purposes, printing top k results from internal dictionaries (not including histograms)
         self.__k = 10
 
         self.__timeslice_start = None
         self.__timeslice_duration = duration
         self.__timeslice_end = None
-
-    def __convertTime (self, ms):
-        # Convert milliseconds to a datetime object
-        time = datetime.datetime.fromtimestamp(ms / 1000.0)
-
-        formatted_time = time.strftime('%H:%M:%S')
 
     def setK (self, k):
         self.__k = k
@@ -61,19 +43,16 @@ class TweetStats:
     def getTopTweeters(self):
         return self.__topTweeters
 
-    #This function assumes that tweets fed into the tweetStats object chronologically
-    #Simply collects all the tweets and puts them into time buckets and a tweet heap for processing
+
     def logTweet (self, tweet):
-        #If there is no timeslice_start, this must be the first tweet being added
-        #Initiate the timeslice markers and the first bucket in the histo dictionary
+
         if not self.__timeslice_start:
             self.__timeslice_start = tweet.get_timestamp()
 
             self.__timeslice_end = self.__timeslice_start + self.__timeslice_duration
             self.__histograms[(self.__timeslice_start, self.__timeslice_end)] = TweetHistogram()
 
-        #Handles if timestamp of current tweet is outside the scope of our final timeslice key
-        #Adds a new timeslice bucket until there's one to hold tweet
+
         while self.__timeslice_end < tweet.get_timestamp():
             self.__timeslice_start = self.__timeslice_end
 
@@ -86,7 +65,6 @@ class TweetStats:
 
         self.__tweetLog.append(tweet)
 
-        # print(self.__histograms)
 
     def analyzeTweets(self):
         # print("Creating Word Clouds")
@@ -96,17 +74,12 @@ class TweetStats:
         # print("Finished Word Clouds")
 
         for tweet in self.__tweetLog:
-            #Updates Top Tweeters
             username = tweet.get_username()
             if username not in self.__topTweeters:
                 self.__topTweeters.add(username, 1)
             else:
                 self.__topTweeters.updateKV_Pair(username, self.__topTweeters.get(username) + 1)
 
-            # print(self.__topTweeters)
-            # print("Finished Top Tweeters")
-
-            # Updates Top Hashtags
             hashtags = tweet.get_hashtags()
 
             if hashtags:
@@ -116,10 +89,6 @@ class TweetStats:
                     else:
                         self.__topHashtags.updateKV_Pair(hashtag, self.__topHashtags.get(hashtag) + 1)
 
-            # print(self.__topHashtags)
-            # print("Finished top hashtags")
-
-            # Updates Top Mentioned
             mentions = tweet.get_mentions()
 
             if mentions:
@@ -129,11 +98,6 @@ class TweetStats:
                     else:
                         self.__topMentioned.updateKV_Pair(mention, self.__topMentioned.get(mention) + 1)
 
-            # print("Finished top mentions")
-
-            # print(self.__topMentioned)
-
-            #Updates Top Retweeted Accounts and Retweets
             if tweet.is_retweet() and mentions:
                 retweeted_acc = mentions[0]
                 original_text = tweet.get_original_text()
@@ -153,10 +117,6 @@ class TweetStats:
                 else:
                     self.__topRetweeted.updateKV_Pair(retweeted_acc, self.__topRetweeted.get(retweeted_acc) + 1)
 
-            # print("Finish retweets and top tweeted")
-
-    #This function can be used later to clip data that we feel is unnecessary
-    #e.g. tweeters who only have 3 tweets or less
     def optimize(self):
         pass
 
@@ -168,7 +128,6 @@ class TweetStats:
         #     output += f"{key}: {value}\n"
 
         output += "Top Retweeted:\n"
-        # output += self.__topRetweeted.__str__()
         output += str(self.__topRetweeted.getTop(self.__k))
         output += '\n'
 
@@ -179,17 +138,14 @@ class TweetStats:
                 output += f"\t{key}: {value}\n"
 
         output += "Top Mentioned:\n"
-        # output += self.__topMentioned.__str__()
         output += str(self.__topMentioned.getTop(self.__k))
         output += '\n'
 
         output += "Top Hashtags:\n"
-        # output += self.__topHashtags.__str__()
         output += str(self.__topHashtags.getTop(self.__k))
         output += '\n'
 
         output += "Top Tweeters:\n"
-        # output += self.__topTweeters.__str__()
         output += str(self.__topTweeters.getTop(self.__k))
         output += '\n'
 

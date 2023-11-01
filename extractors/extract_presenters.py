@@ -28,6 +28,7 @@ def extract_presenters(tweets, awards_winners_list):
     # A list to store presenter-related tweets
     presenter_tweets = []
 
+    # Identify tweets containing presenter mentions, excluding retweets
     for tweet in tweets:
         presenter_tweet = re.search(PRESENTERS_REGEX, tweet.get_original_text())
 
@@ -35,6 +36,7 @@ def extract_presenters(tweets, awards_winners_list):
             continue
         presenter_tweets.append(presenter_tweet.string)
 
+    # Organize tweets by award categories
     for tweet in presenter_tweets:
         for award in existing_awards:
             if award in tweet:
@@ -42,22 +44,26 @@ def extract_presenters(tweets, awards_winners_list):
                     award_presenter_tweet_dict[award] = []
                 award_presenter_tweet_dict[award].append(tweet)
 
+    # A dictionary to store award presenters
     award_presenter = {}
-    for award, tweets in award_presenter_tweet_dict.items():
 
+    for award, tweets in award_presenter_tweet_dict.items():
         for tweet in tweets:
             good_matches = []
 
+            # Filter and collect valid presenter mentions
             matches = re.findall(NAME_REGEX, tweet)
             for match in matches:
                 if "best" not in match.lower() and "the" not in match.lower():
                     good_matches.append(match)
 
+            # Extract and add additional presenter mentions from slash-separated names
             matches_with_slash = re.findall(NAME_SLASH_REGEX, tweet)
             for match in matches_with_slash:
                 if "http" not in match.lower() and "the" not in match.lower():
                     good_matches.extend(match.split("/"))
 
+            # Extract and add presenter mentions from hashtag-annotated names
             matches_with_hashtag = re.findall(NAME_HASHTAG_REGEX, tweet)
             for match in matches_with_hashtag:
                 if "golden" not in match.lower() and "globe" not in match.lower() and "the" not in match.lower():
