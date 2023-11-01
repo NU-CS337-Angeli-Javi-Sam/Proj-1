@@ -18,7 +18,7 @@ from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
 from extractors.extract_hosts import extract_hosts
-from extractors.extract_more import extract_more_info
+from extractors.extract_better import extract_more_info
 
 import pickle as pkl
 
