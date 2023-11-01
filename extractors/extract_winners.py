@@ -1,7 +1,7 @@
 from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
-import pickle as pkl
 import re
+from utils.regex import WINNERS_REGEX
 
 # Finding out if winner is supposed to be a person:
 # Congrats person for thing: if person look for before the for and
@@ -56,38 +56,21 @@ def merge (list):
 def extract_winners (tweets, awards_list):
 
     #Extract awards from the output of the extract_awards method
-    # awards_list = None
-
-    # with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\awards.pkl", "rb") as file:
-    #     awards_list = pkl.load(file)
-    # print(awards_list)
-
-    #Proposition list: used as reference to remove reductant words from pieces of text for similarity_ratio
-    minor_words = [' in ', ' on ', ' for ', ' a ', ' by ', ' an ', ' or ', ' and ', ' the ', ' nor ', ' yet ', ' but ',
-                   ' so ', ' to ', ' from ',
-                   ' of ', ' under ', ' over ', ' at ', ' within ', ' between ', ' through ']
 
     #Dict mapping awards to potential winners, keys are winners, values are sort dictionaries of winner candidates
     awards_to_winner = {}
-    # print(awards_list.getKeys())
 
     for key in awards_list.getKeys():
         awards_to_winner[key] = SortedDict()
 
-        winner_regexes = [r'[A-Z][a-zA-Z\s]*[A-Z][a-z]*', #Regex to find names of person winners
-                          r'for ([A-Z][a-z]*\s)+']        #Regex to find names of non-person winners: Assumes "for" procedes name
 
         for tweet in tweets:
-            # award_matches = re.findall(winner_regexes[0], tweet.get_original_text())
-            # # print(award_matches)
-            #
-            # for award_match in award_matches:
             #If tweet is relevant to our current award (the current key)
             if key in tweet.get_original_text():
                 regex_matches = []
 
                 #Find all the matches to our regexes for this particular tweet
-                for winner_regex in winner_regexes:
+                for winner_regex in WINNERS_REGEX:
                     matches = re.findall(winner_regex, tweet.get_original_text().replace(key, ' '))
 
                     regex_matches.extend(matches)
@@ -95,21 +78,6 @@ def extract_winners (tweets, awards_list):
                 #Check if any of the matches are already mapped to an award key in awards_to_winner
                 #If so, increment the preexisting match, if not add it
                 for match in regex_matches:
-                    # if awards_to_winner[key].getKeys():
-                    #     merged = False
-                    #
-                    #     for potential_winner in awards_to_winner[key].getKeys():
-                    #         #Attempt to remove 'for' and anything before it for non person winners
-                    #         if get_similarity_ratio(potential_winner, match) >= 0.50:
-                    #             merged = True
-                    #             awards_to_winner[key][potential_winner] += 1
-                    #             break
-                    #     if not merged:
-                    #         if match == 'RT' or match == 'GoldenGlobes':
-                    #             continue
-                    #         awards_to_winner[key].add(match, 1)
-                    # else:
-                    #     awards_to_winner[key].add(match, 1)
 
                     if match in awards_to_winner[key]:
                        awards_to_winner[key].updateKV_Pair(match, awards_to_winner[key].get(match) + 1)
@@ -125,7 +93,6 @@ def extract_winners (tweets, awards_list):
     keys = list(awards_to_winner.keys())
     relevant_awards = []
 
-    # print(awards_to_winner['Lifetime Achievement Award'])
     #Attempt to remove irrelevant awards
     for key in keys:
         if len(awards_to_winner[key].getKeys()) >= 3:
@@ -133,12 +100,8 @@ def extract_winners (tweets, awards_list):
                 relevant_awards.append(key)
 
     for award in relevant_awards:
-        # print('Before: ', key)
         awards_to_winner[award] = merge(awards_to_winner[award])
-        # print(award, awards_to_winner[award].getTop(3))
 
-    # print(awards_to_winner['Lifetime Achievement Award'])
-    with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", 'wb') as file:
-        pkl.dump(awards_to_winner, file)
+
 
     return awards_to_winner

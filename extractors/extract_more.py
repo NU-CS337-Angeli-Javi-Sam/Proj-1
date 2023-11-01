@@ -1,5 +1,4 @@
 import re
-import pickle as pkl
 from utils.regex import NAME_REGEX, NAME_SLASH_REGEX, NAME_HASHTAG_REGEX
 
 # filter_tweets: [Tweets()] str str [str] [str] -> [Tweets()]

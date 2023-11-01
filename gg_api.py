@@ -8,7 +8,7 @@ from data_structures.Tweet import Tweet
 from data_structures.TweetStats import TweetStats
 
 from helpers.awards import get_awards_list
-from helpers.hosts import find_hosts_in_tweets, get_hosts_list
+from helpers.hosts import get_hosts_list
 from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
 from helpers.winner import get_winners_dict
@@ -17,6 +17,7 @@ from extractors.extract_winners import extract_winners
 from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
+from extractors.extract_hosts import extract_hosts
 
 import pickle as pkl
 
@@ -43,6 +44,7 @@ def load_tweet_data(data_directory, filename):
 
         # Print the number of tweets loaded
         print(f"Loaded {len(tweets)} tweets from {filepath}")
+        print()
         # Now, 'tweets' contains all the tweets from the JSON file and can be used for preprocessing.
     else:
         print(
@@ -139,7 +141,7 @@ def main():
 
     print("Identifying Hosts")
 
-    hosts = find_hosts_in_tweets(tweets)
+    hosts = extract_hosts(tweets)
 
     print("Hosts Identified")
     print()

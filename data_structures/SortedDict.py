@@ -17,6 +17,10 @@ class SortedDict:
             self.sort()
 
         return self.__sortedKeys
+
+    def getItems(self):
+        return self.__internalDict.items()
+
     def getValues(self):
         return self.__internalDict.values()
 

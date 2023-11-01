@@ -1,23 +1,35 @@
 import re
-import pickle as pkl
-from utils.regex import NAME_REGEX, NAME_SLASH_REGEX, NAME_HASHTAG_REGEX
+from utils.regex import NAME_REGEX, NAME_SLASH_REGEX, NAME_HASHTAG_REGEX, PRESENTERS_REGEX
 
 def extract_presenters(tweets, awards_winners_list):
-    # with open("C:\\Users\\samj9\\PycharmProjects\\Proj-1\\extractors\\award_winners.pkl", "rb") as file:
-    #     awards_winners_list = pkl.load(file)
+    """
+    Extract presenters associated with specific awards from a list of tweets and organize them by award.
 
+    This function analyzes a list of tweets to identify potential presenters for specific awards. It then organizes the
+    presenters by award categories based on the awards provided in the 'awards_winners_list'.
+
+    Parameters:
+    - tweets (list of Tweet): A list of Tweet objects containing tweet text.
+    - awards_winners_list (dict): A dictionary of award categories as keys and winner names as values.
+
+    Returns:
+    - dict: A dictionary where award categories are keys, and the associated presenters are values.
+    """
+
+    # A dictionary to store tweets associated with awards
     award_presenter_tweet_dict = {}
-    # Remove awards that don't have winners
+
+    # Generate a list of all the awards names
     existing_awards = []
     for k, v in awards_winners_list.items():
         if v:
             existing_awards.append(k)
 
-    presenters_regex = r'\b[A-Z][a-zA-Z]+\s+[A-Z][a-zA-Z]+\b\s+(presenting|presents|present|announces|announce|introduces|introducing|intros|announcer|announcers)'
+    # A list to store presenter-related tweets
     presenter_tweets = []
 
     for tweet in tweets:
-        presenter_tweet = re.search(presenters_regex, tweet.get_original_text())
+        presenter_tweet = re.search(PRESENTERS_REGEX, tweet.get_original_text())
 
         if presenter_tweet is None or presenter_tweet.string.startswith("RT"):
             continue
@@ -32,10 +44,8 @@ def extract_presenters(tweets, awards_winners_list):
 
     award_presenter = {}
     for award, tweets in award_presenter_tweet_dict.items():
-        # print()
-        # print(award)
+
         for tweet in tweets:
-            # print(tweet)
             good_matches = []
 
             matches = re.findall(NAME_REGEX, tweet)
@@ -43,24 +53,16 @@ def extract_presenters(tweets, awards_winners_list):
                 if "best" not in match.lower() and "the" not in match.lower():
                     good_matches.append(match)
 
-            # print("REGULAR", good_matches)
-
             matches_with_slash = re.findall(NAME_SLASH_REGEX, tweet)
             for match in matches_with_slash:
                 if "http" not in match.lower() and "the" not in match.lower():
                     good_matches.extend(match.split("/"))
-
-            # print("SLASH", good_matches)
-            # print()
 
             matches_with_hashtag = re.findall(NAME_HASHTAG_REGEX, tweet)
             for match in matches_with_hashtag:
                 if "golden" not in match.lower() and "globe" not in match.lower() and "the" not in match.lower():
                     good_matches.append(match[1:].strip().strip('.').strip(','))
 
-            # print("HASHTAG", good_matches)
         award_presenter[award] = good_matches
 
     return award_presenter
-
-
