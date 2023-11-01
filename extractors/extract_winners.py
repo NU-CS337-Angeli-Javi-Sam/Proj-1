@@ -1,7 +1,7 @@
 from data_structures.SortedDict import SortedDict
 from difflib import SequenceMatcher
 import re
-from utils.regex import WINNERS_REGEX
+from utils.regex import NAME_REGEX, WINNERS_REGEX
 
 def get_similarity_ratio(text1, text2):
     """
@@ -60,6 +60,36 @@ def merge(lst):
 
     # Return the SortedDict with merged keys.
     return lst
+
+def find_congrats_tweets(tweets, awards):
+
+    award_names = awards.getKeys()
+    award_winners = {}
+
+    tweets_to_keep = []
+    for tweet in tweets:
+        tweet_text = tweet.get_original_text()
+
+        MOVIE_REGEX = r"[A-Za-z0-9\s'\"&!@#$%^*()_+=\[\]{};:,.<>?/\-\\]+"
+
+        congrats_regex = re.compile(f'Congrats to {NAME_REGEX} for .* (for|-|in) {MOVIE_REGEX}')
+
+        congrats_match = congrats_regex.search(tweet_text)
+
+        tweets_to_keep.append(tweet.get_original_text()) if congrats_match is not None else None
+
+    for award_name in award_names:
+        for tweet in tweets_to_keep:
+            if award_name not in award_winners:
+                award_winners[award_name]=[]
+            if award_name in tweet:
+                award_winners[award_name].append(tweet)
+
+    for award, tweets in award_winners.items():
+        print(award, tweets)
+        print()
+
+    return tweets_to_keep
 
 def extract_winners (tweets, awards_list):
     """
