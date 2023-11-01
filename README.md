@@ -11,16 +11,17 @@ This project attempts to identify the host(s), awards, and associated presenters
 Link to Repository: [NU-CS337-Angeli-Javi-Sam/Proj-1](https://github.com/NU-CS337-Angeli-Javi-Sam/Proj-1)
 
 
+## Python Version
+v3.10.7
+
 ## External Packages Used
 
 - Pandas
--
--
 
 ## Set-Up
 
 1. Navigate to the `Proj-1` directory
-2. Run the following in Terminal (we are using what Python v3.10.7):
+2. Run the following in Terminal (we are using Python v3.10.7):
    1. `python3 -m venv ./venv`
    2. `source venv/bin/activate`
    3. `pip3 install -r requirements.txt`

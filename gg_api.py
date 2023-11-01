@@ -13,7 +13,7 @@ from helpers.nominees import get_nominees_dict
 from helpers.presenters import get_presenters_dict
 from helpers.winner import get_winners_dict
 
-from extractors.extract_winners import extract_winners
+from extractors.extract_winners import extract_winners, find_congrats_tweets
 from extractors.extract_awards import extract_awards
 from extractors.extract_nominees import extract_nominees
 from extractors.extract_presenters import extract_presenters
@@ -241,6 +241,8 @@ def main():
     print()
 
     print("Extracting Winners")
+    # Potential approach for the future with better award name identification
+    # find_congrats_tweets(tweets, awards)
     awards_winners = extract_winners(tweets, awards)
     print("Winners Extracted")
     print()
@@ -256,40 +258,7 @@ def main():
     print()
 
     print("Compiling Data")
-
     good_awards_ceremony = compile_data(hosts, awards_winners, awards_presenters, awards_nominees, tweet_stats)
-
-    # good_awards = []
-    # for award_name in awards_winners.keys():
-
-    #     try:
-    #         presenters = awards_presenters[award_name]
-    #     except:
-    #         presenters = []
-
-    #     try:
-    #         nominees = [a[0] for a in awards_nominees[award_name].getTop(5)]
-    #     except:
-    #         nominees = []
-
-    #     try:
-    #         winner = awards_winners[award_name].getTop(1)[0][0]
-    #     except:
-    #         winner = ""
-
-    #     award_item = Award(award_name, presenters, nominees, winner)
-    #     good_awards.append(award_item)
-
-    # good_awards_ceremony = AwardsCeremony(hosts, good_awards, tweet_stats)
-
-    # with open("PICKLED_STUFF.pkl", 'wb') as file:
-    #     pkl.dump(good_awards_ceremony, file)
-    #     pkl.dump(tweets, file)
-
-    # exit(0)
-
-    # extract_more_info(tweets, good_awards_ceremony.get_awards())
-
     print("Data Compiled")
     print()
 
