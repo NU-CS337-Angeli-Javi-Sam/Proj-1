@@ -35,3 +35,6 @@ PRESENTERS_REGEX = r"\b[A-Z][a-zA-Z]+\s+[A-Z][a-zA-Z]+\b\s+(presenting|presents|
 
 WINNERS_REGEX = [r'[A-Z][a-zA-Z\s]*[A-Z][a-z]*', #Regex to find names of person winners
                           r'for ([A-Z][a-z]*\s)+']
+
+FILM_REGEX = r'for ([A-Z][a-z]*\s)+'
+PERSON_REGEX = r'[A-Z][a-z]*[A-Z][a-z]*'

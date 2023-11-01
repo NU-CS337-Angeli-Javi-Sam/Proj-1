@@ -4,3 +4,4 @@ IMDb datasets/
 .DS_Store
 
 myenv/
+*.pkl
