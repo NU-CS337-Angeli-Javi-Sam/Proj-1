@@ -140,8 +140,8 @@ def main():
     tweet_stats.setK(10)
 
     print("Identifying Hosts")
-    hosts = find_hosts_in_tweets(tweets)
-    
+    hosts = extract_hosts(tweets)
+
     #Extraction:
     awards = extract_awards(tweets) # SortedDict("award", count)
     exit(0)
