@@ -88,6 +88,6 @@ class AwardsCeremony:
         retweets = self.__tweetstats.getRetweets()
 
         for key in retweeters:
-            ceremony_dict["Tweet Stats"]["Top Retweets"][key] = retweets[key]
+            ceremony_dict["Tweet Stats"]["Top Retweets"][key] = retweets[key][:5]
 
         return ceremony_dict

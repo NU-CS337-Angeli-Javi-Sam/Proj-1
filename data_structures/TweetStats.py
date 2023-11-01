@@ -10,7 +10,7 @@ class TweetStats:
     - retweets (dict): A dictionary containing retweet counts for each tweet.
     - topRetweeted (SortedDict): A sorted dictionary of tweets sorted by the number of retweets.
     - topMentioned (SortedDict): A sorted dictionary of Twitter users mentioned the most in tweets.
-    - topHashtags (SortedDict): A sorted dictionary of the most used hashtags in tweets.
+    - topHashTags (SortedDict): A sorted dictionary of the most used hashtags in tweets.
     - topTweeters (SortedDict): A sorted dictionary of Twitter users with the most tweets.
     - tweetLog (list): A list to store tweet objects.
     - k (int): The value for controlling the number of top items to retrieve.
@@ -30,7 +30,7 @@ class TweetStats:
         self.__retweets = {}  # A dictionary containing retweet counts for each tweet.
         self.__topRetweeted = SortedDict()  # A sorted dictionary of tweets sorted by the number of retweets.
         self.__topMentioned = SortedDict()  # A sorted dictionary of the most mentioned Twitter users.
-        self.__topHashtags = SortedDict()  # A sorted dictionary of the most used hashtags in tweets.
+        self.__topHashTags = SortedDict()  # A sorted dictionary of the most used hashtags in tweets.
         self.__topTweeters = SortedDict()  # A sorted dictionary of Twitter users with the most tweets.
         self.__tweetLog = []  # A list to store tweet objects.
         self.__k = 10  # The value for controlling the number of top items to retrieve.
@@ -92,14 +92,14 @@ class TweetStats:
         """
         return self.__topMentioned
 
-    def getTopHashtags(self):
+    def getTopHashTags(self):
         """
         Get a sorted dictionary of the most used hashtags in tweets.
 
         Returns:
         - SortedDict: A sorted dictionary of hashtags.
         """
-        return self.__topHashtags
+        return self.__topHashTags
 
     def getTopTweeters(self):
         """
@@ -179,10 +179,10 @@ class TweetStats:
             if hashtags:
                 # Iterate through hashtags and update top hashtags statistics
                 for hashtag in hashtags:
-                    if hashtag not in self.__topHashtags:
-                        self.__topHashtags.add(hashtag, 1)
+                    if hashtag not in self.__topHashTags:
+                        self.__topHashTags.add(hashtag, 1)
                     else:
-                        self.__topHashtags.updateKV_Pair(hashtag, self.__topHashtags.get(hashtag) + 1)
+                        self.__topHashTags.updateKV_Pair(hashtag, self.__topHashTags.get(hashtag) + 1)
 
             # Get the list of mentioned accounts in the tweet
             mentions = tweet.get_mentions()
@@ -234,32 +234,44 @@ class TweetStats:
         - str: A formatted string representation of TweetStats, including top retweeted accounts, retweet counts, top mentioned
         accounts, top hashtags, and top tweeters.
         """
-        output = "TweetStats: \n\n"
+        output = "\n\nTweetStats: \n\n"
 
         # output += "Histograms:\n"
         # for key, value in self.__histograms.items():
         #     output += f"{key}: {value}\n"
 
         output += "Top Retweeted:\n"
-        output += str(self.__topRetweeted.getTop(self.__k))
+        top_retweeted = self.__topRetweeted.getTop(10)
+        for user_count in top_retweeted:
+            output += f"Account: {user_count[0]}, # of Retweets: {user_count[1]}\n"
         output += '\n\n'
 
         output += "Retweets:\n"
-        retweeted_accs = self.__topRetweeted.getSortedKeys()[0:self.__k]
+        retweeted_accs = self.__topRetweeted.getSortedKeys()[0:10]
         for key, value in self.__retweets.items():
             if key in retweeted_accs:
-                output += f"\t{key}: {value[:5]}\n\n"
+                output += f"{key}:\n"
+                output += f"  Retweets:\n"
+                for retweet in value[:5]:
+                    output += f"    '{retweet}'\n"
+        output += "\n"
 
         output += "Top Mentioned:\n"
-        output += str(self.__topMentioned.getTop(self.__k))
+        top_mentioned = self.__topMentioned.getTop(10)
+        for user_count in top_mentioned:
+            output += f"{user_count[0]}, # of Mentions: {user_count[1]}\n"
         output += '\n\n'
 
         output += "Top Hashtags:\n"
-        output += str(self.__topHashtags.getTop(self.__k))
+        top_hash_tags = self.__topHashTags.getTop(10)
+        for hash_tag_count in top_hash_tags:
+            output += f"{hash_tag_count[0]}, # of Hash Tag Occurrences: {hash_tag_count[1]}\n"
         output += '\n\n'
 
         output += "Top Tweeters:\n"
-        output += str(self.__topTweeters.getTop(self.__k))
+        top_tweeters = self.__topTweeters.getTop(10)
+        for tweeter_count in top_tweeters:
+            output += f"@{tweeter_count[0]}, # of Tweets Posted: {tweeter_count[1]}\n"
         output += '\n'
 
         return output

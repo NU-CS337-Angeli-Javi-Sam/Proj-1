@@ -20,7 +20,7 @@ Link to Repository: [NU-CS337-Angeli-Javi-Sam/Proj-1](https://github.com/NU-CS33
 ## Set-Up
 
 1. Navigate to the `Proj-1` directory
-2. Run the following in Terminal:
+2. Run the following in Terminal (we are using what Python v3.10.7):
    1. `python3 -m venv ./venv`
    2. `source venv/bin/activate`
    3. `pip3 install -r requirements.txt`
@@ -31,6 +31,7 @@ Link to Repository: [NU-CS337-Angeli-Javi-Sam/Proj-1](https://github.com/NU-CS33
 1. Run `python3 gg_api.py {filename} {year}`
    - `{filename}` is the filename containing the tweets for the awards ceremony.
    - `{year}` is the year the awards ceremony took place
+   - If left without `{filename}` or `{year}`, it will default to 2013's data.
 
 
 ## Output
@@ -74,7 +75,7 @@ Subsequently, we merged all winner names based on a similarity ratio of approxim
 
 We attempted to incorporate a function that could determine whether the winner should be a human or a movie based on the award name. However, this proved challenging to implement effectively. For example, in categories like "Best Original Song," we often obtained the songwriters' names rather than the movie in which the song featured. Nonetheless, our matching process remained fairly accurate due to subsequent verification practices downstream.
 
-### Nominees  
+### Nominees
 Nominees follows a similar process to our other extraction methods. It is provided with a dictionary of awards to winners and creates a new dictionary of awards linked to a SortedDict of nominees using those keys. Next, it extracts the most likely winner from the awards to winner dictionary and uses that, along with the award name, to guide its search through the list of tweet objects we are working with. We then filter out invalid entries in the nominee list and return our awards to nominee data structure.
 
 This method is relatively straightforward. We had planned to implement a way to distinguish between the names of individuals and those of movies, similar to our approach for winners, but this feature isn't fully realized as intended. Nevertheless, the accuracy remains high, and the method proves effective.
